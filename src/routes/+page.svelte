@@ -61,7 +61,6 @@
         }, 2000);
         formEl.reset();
       } else {
-        // @ts-expect-error
         submitButtonText = 'Invalid! Please check your inputs.';
         submitButtonDisabled = true;
         setTimeout(() => {
