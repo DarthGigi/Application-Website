@@ -13,7 +13,7 @@
     {:then applicationdata}
       {#if applicationdata}
         {#each applicationdata as application}
-          <ul role="list" class="divide-y divide-neutral-800">
+          <ul class="divide-y divide-neutral-800">
             <li>
               <a href="/dashboard/{application.id}" class="block hover:bg-neutral-800">
                 <div class="px-4 py-4 sm:px-6">

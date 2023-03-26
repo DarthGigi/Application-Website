@@ -21,7 +21,7 @@
   <meta property="og:url" content="https://apply.sirius.menu/" />
   <meta property="og:title" content="Sirius Jobs" />
   <meta property="og:description" content="Start your journey at Sirius, apply for a role in the discord server and more. Show everyone why Sirius is leading in customer experience." />
-  <meta property="og:image" content="/assets/images/png/jobsbanner.png" />
+  <meta property="og:image" content="/assets/images/jobsbanner.png" />
   <meta property="og:site_name" content="Sirius Jobs" />
 
   <!-- Twitter -->
@@ -29,7 +29,7 @@
   <meta property="twitter:url" content="https://apply.sirius.menu/" />
   <meta property="twitter:title" content="Sirius Jobs" />
   <meta property="twitter:description" content="Start your journey at Sirius, apply for a role in the discord server and more. Show everyone why Sirius is leading in customer experience." />
-  <meta property="twitter:image" content="/assets/images/png/jobsbanner.png" />
+  <meta property="twitter:image" content="/assets/images/jobsbanner.png" />
 
   <!-- Favicon -->
   <link rel="icon" href="/favicon.png" />

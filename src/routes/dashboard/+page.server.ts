@@ -22,6 +22,7 @@ export const load: PageServerLoad = async ({ locals }) => {
     };
   } catch (err) {
     console.log(err);
+    //@ts-expect-error
     return fail(500, err);
   }
 };
