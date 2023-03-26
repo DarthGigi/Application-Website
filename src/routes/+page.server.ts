@@ -26,11 +26,8 @@ const formSchema = z.object({
   data: z.string().min(2)
 });
 
-let ip = '';
-
 export async function load(event) {
   const form = await superValidate(event, formSchema);
-  ip = event.getClientAddress();
   return {
     props: {
       form
@@ -41,7 +38,7 @@ export async function load(event) {
 export const actions: Actions = {
   default: async (event) => {
     const form = await superValidate(event, formSchema);
-
+    const ip = event.getClientAddress();
     if (!form.valid) {
       console.log('Form is not valid');
       console.log(
@@ -73,7 +70,7 @@ export const actions: Actions = {
               },
               {
                 ipAddress: {
-                  contains: event.getClientAddress()
+                  contains: ip
                 }
               }
             ]
