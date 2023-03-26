@@ -1,9 +1,19 @@
-import { PrismaClient } from '@prisma/client';
+import pkg, { PrismaClient } from '@prisma/client';
 
-const prisma = global.prisma || new PrismaClient();
-
-if (process.env.NODE_ENV === 'development') {
-  global.prisma = prisma;
+declare global {
+  var prisma: PrismaClient; // eslint-disable-line
 }
 
-export { prisma };
+let prisma;
+
+if (process.env.NODE_ENV === 'development') {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient();
+  }
+  prisma = global.prisma;
+} else {
+  const { PrismaClient } = pkg;
+  prisma = new PrismaClient();
+}
+
+export default prisma;
