@@ -37,6 +37,7 @@ export async function load(event) {
 
 export const actions: Actions = {
   default: async (event) => {
+    console.log(event);
     const form = await superValidate(event, formSchema);
     const ip = event.getClientAddress();
     if (!form.valid) {
@@ -78,14 +79,6 @@ export const actions: Actions = {
         });
 
         if (existingApplication !== null) {
-          console.log('Application already exists');
-          console.log(
-            fail(400, {
-              form,
-              message: 'Application already exists'
-            })
-          );
-
           return fail(400, {
             form,
             message: 'Application already exists'
