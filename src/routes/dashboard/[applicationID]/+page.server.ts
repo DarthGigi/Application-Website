@@ -92,9 +92,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 export const actions: Actions = {
   acceptApplication: async ({ params, locals }) => {
     const user = await locals.validate();
-    console.log(locals);
     try {
-      await prisma.application.update({
+      const applicationAccepted = await prisma.application.update({
         where: {
           id: params.applicationID
         },
@@ -107,23 +106,22 @@ export const actions: Actions = {
           }
         }
       });
+
       const application = await prisma.application.findUnique({
         where: {
           id: params.applicationID
         }
       });
 
-      discordAPI(`guilds/${guildId}/members/${application?.discordID}/roles/939871641209540658`, 'PUT', null, {
-        'X-Audit-Log-Reason': 'Application accepted'
-      });
-      discordAPI(`guilds/${guildId}/members/${application?.discordID}/roles/1089307016108970035`, 'PUT', null, {
-        'X-Audit-Log-Reason': 'Application accepted'
-      });
-
+      // Add roles
       // Send messages
       client.on('ready', async () => {
-        const user = await client.users.fetch('389759544776982528');
+        const guild = await client.guilds.fetch(guildId);
+        // @ts-expect-error
+        const user = await guild.members.fetch(application?.discordID);
         const channel = await client.channels.fetch('1034058501565194310');
+        user.roles.add(['939871641209540658', '1089307016108970035'], 'Application accepted');
+
         user.send({
           embeds: [
             {
@@ -170,7 +168,7 @@ export const actions: Actions = {
   rejectApplication: async ({ params, locals }) => {
     const user = await locals.validate();
     try {
-      await prisma.application.update({
+      const applicationDenied = await prisma.application.update({
         where: {
           id: params.applicationID
         },
@@ -192,30 +190,33 @@ export const actions: Actions = {
 
       // Send messages
       client.on('ready', async () => {
-        const user = await client.users.fetch('389759544776982528');
+        const user = await client.users.fetch(application?.discordID);
         const channel = await client.channels.fetch('1034058501565194310');
-        user.send({
-          embeds: [
-            {
-              title: '<:Sirius:1056924373648429096>  Application Denied',
-              description: `Your application has been denied. Due to our privacy policy, we may not disclose the reason for the denial. You may reapply <t:${Math.floor(Date.now() / 1000) + 1209600}:R>`,
-              color: 0x2b2d31
-            }
-          ]
-        });
-        //@ts-expect-error
-        channel.send({
-          embeds: [
-            {
-              title: `Application Denied`,
-              description: `HAHAHAHAHAHAH <@${application?.discordID}> AKA ${application?.name} has been denied! WHAT A LOSER LMAOOOOO <a:pepeLaugh:939964833879711775>`,
-              color: 0x2b2d31
-            }
-          ],
-          content: `<@${application?.discordID}>`
-        });
+        try {
+          user.send({
+            embeds: [
+              {
+                title: '<:Sirius:1056924373648429096> Application Denied',
+                description: `Your application has been denied. Due to our privacy policy, we may not disclose the reason for the denial. You may reapply <t:${Math.floor(Date.now() / 1000) + 1209600}:R>`,
+                color: 0x2b2d31
+              }
+            ]
+          });
+          //@ts-expect-error
+          channel.send({
+            embeds: [
+              {
+                title: `Application Denied`,
+                description: `HAHAHAHAHAHAH <@${application?.discordID}> AKA ${application?.name} has been denied! WHAT A LOSER LMAOOOOO <a:pepeLaugh:939964833879711775>`,
+                color: 0x2b2d31
+              }
+            ],
+            content: `<@${application?.discordID}>`
+          });
+        } catch (error) {
+          console.log(error);
+        }
       });
-
       client.login(process.env.BOT_TOKEN);
     } catch (error) {
       console.log(error);
@@ -223,9 +224,9 @@ export const actions: Actions = {
     }
     throw redirect(302, '/dashboard/' + params.applicationID);
   },
-  deleteApplication: async ({ request, params }) => {
+  deleteApplication: async ({ params }) => {
     try {
-      prisma.application.delete({
+      const applicationDeleted = await prisma.application.delete({
         where: {
           id: params.applicationID
         }
