@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String       @id @default(cuid()) @map("_id")
+  name          String
+  password      String
+  session       Session[]
+  Key           Key[]
+  Application   Application? @relation(fields: [applicationId], references: [id])
+  applicationId String?
+}
+
+enum UserRole {
+  APPLICANT
+  REVIEWER
+}
+
+model Session {
+  id             String @id @default(cuid()) @map("_id")
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("session")
+}
+
+model Key {
+  id              String  @id @default(cuid()) @map("_id")
+  hashed_password String?
+  user_id         String
+  primary         Boolean
+  expires         BigInt?
+  user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("key")
+}
+
+model Application {
+  id              String            @id @default(cuid()) @map("_id")
+  name            String
+  email           String
+  discordID       String
+  siriusUsage     String?
+  siriusDiscovery String?
+  question1       String?
+  question2       String?
+  question3       String?
+  question4       String?
+  question5       String?
+  question6       String?
+  question7       String?
+  question8       String?
+  question9       String?
+  question10      String?
+  question11      String?
+  contactStaff    Boolean?
+  contactInfo     Boolean?
+  data            Boolean?
+  ipAddress       String
+  status          ApplicationStatus @default(PENDING)
+  date            DateTime          @default(now())
+  reviewers       User[]
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+enum ReviewerStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
