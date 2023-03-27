@@ -20,11 +20,11 @@
                     <p class="truncate text-sm font-medium text-neutral-200">{application.name}</p>
                     <div class="ml-2 flex flex-shrink-0">
                       {#if application.status == 'APPROVED'}
-                        <p class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{application.status.charAt(0) + application.status.substring(1).toLowerCase()}</p>
+                        <p class="inline-flex rounded-full bg-green-300 px-2 text-xs font-semibold leading-5 text-green-900">{application.status.charAt(0) + application.status.substring(1).toLowerCase()}</p>
                       {:else if application.status == 'DENIED'}
-                        <p class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-red-800">{application.status.charAt(0) + application.status.substring(1).toLowerCase()}</p>
+                        <p class="inline-flex rounded-full bg-red-300 px-2 text-xs font-semibold leading-5 text-red-900">{application.status.charAt(0) + application.status.substring(1).toLowerCase()}</p>
                       {:else}
-                        <p class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-yellow-800">{application.status.charAt(0) + application.status.substring(1).toLowerCase()}</p>
+                        <p class="inline-flex rounded-full bg-yellow-300 px-2 text-xs font-semibold leading-5 text-yellow-900">{application.status.charAt(0) + application.status.substring(1).toLowerCase()}</p>
                       {/if}
                     </div>
                   </div>
