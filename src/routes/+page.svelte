@@ -2,8 +2,6 @@
   // Imports
   import type { PageData } from './$types';
   import { superForm } from 'sveltekit-superforms/client';
-  import { page } from '$app/stores';
-  import { Button, Modal } from 'flowbite-svelte';
   import FormQuestionContainer from '../components/FormComponents/FormQuestionContainer.svelte';
   import Input from '../components/FormComponents/Input.svelte';
   import TextArea from '../components/FormComponents/TextArea.svelte';
@@ -11,13 +9,12 @@
   import Radio from '../components/FormComponents/Radio.svelte';
   import CheckboxContainer from '../components/FormComponents/CheckboxContainer.svelte';
   import Checkbox from '../components/FormComponents/Checkbox.svelte';
+  import { Turnstile } from 'svelte-turnstile';
+
   import SubmitButton from '../components/FormComponents/SubmitButton.svelte';
 
   let submitButtonDisabled: boolean = false;
   let submitButtonText: string = 'Submit';
-  let defaultModal: boolean = false;
-  let modalTitle: string;
-  let modalContent: string;
 
   // Exports
   export let data: PageData;
@@ -70,10 +67,21 @@
         cancel();
       }
     },
-    onError: ({ result, message }) => console.log('onError', result, message)
+    onError: ({ result, message }) => {
+      console.log('onError', result, message);
+      submitButtonText = 'Error! Please try again.';
+      submitButtonDisabled = true;
+      setTimeout(() => {
+        submitButtonText = 'Submit';
+        submitButtonDisabled = false;
+      }, 2000);
+    }
   });
 </script>
 
+<svelte:head>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</svelte:head>
 <form method="post" id="form" use:enhance>
   <div class="space-y-6 px-4 py-8 sm:px-8 md:px-16 lg:px-32 xl:px-48 2xl:px-72">
     <FormQuestionContainer title="Personal Information" description="A few questions about you">
@@ -140,12 +148,8 @@
     <div class="flex justify-end">
       <SubmitButton text={submitButtonText} disabled={submitButtonDisabled} />
     </div>
+    <div class="flex justify-end">
+      <Turnstile siteKey="0x4AAAAAAADglq6noSCSqjBl" theme="dark" />
+    </div>
   </div>
 </form>
-
-<Modal title={modalTitle} color="red" backdropClasses="bg-black bg-opacity-50" bind:open={defaultModal} autoclose>
-  <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">{modalContent}</p>
-  <svelte:fragment slot="footer">
-    <Button>Close</Button>
-  </svelte:fragment>
-</Modal>

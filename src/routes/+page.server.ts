@@ -35,26 +35,64 @@ export async function load(event) {
   };
 }
 
+// Cloudflare Turnstile
+
+interface TokenValidateResponse {
+  'error-codes': string[];
+  success: boolean;
+  action: string;
+  cdata: string;
+}
+
+async function validateToken(token: FormDataEntryValue | string | null, secret: string | undefined) {
+  const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      response: token,
+      secret: secret
+    })
+  });
+
+  const data: TokenValidateResponse = await response.json();
+
+  return {
+    // Return the status
+    success: data.success,
+
+    // Return the first error if it exists
+    error: data['error-codes']?.length ? data['error-codes'][0] : null
+  };
+}
+
 export const actions: Actions = {
   default: async (event) => {
-    console.log(event);
+    const formdata = await event.request.formData();
+    const token = formdata.get('cf-turnstile-response');
+    const SECRET_KEY = process.env.CF_TURNSTILE_SECRET_KEY;
+
+    // Validate the token
+    const { success, error } = await validateToken(token, SECRET_KEY);
+    console.log(success, error);
+    if (!success) {
+      return fail(400, {
+        message: error || 'Invalid CAPTCHA'
+      });
+    }
+
+    // Validate the form itself
     const form = await superValidate(event, formSchema);
+
     const ip = event.getClientAddress();
     if (!form.valid) {
-      console.log('Form is not valid');
-      console.log(
-        fail(400, {
-          form
-        })
-      );
-
       return fail(400, {
         form
       });
     }
 
     try {
-      // check if email is already in use or if the discordID is already in use
       try {
         const existingApplication: object | null = await prisma.application.findFirst({
           where: {
