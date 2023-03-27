@@ -70,9 +70,10 @@ export const actions: Actions = {
   default: async (event) => {
     // Validate the form itself
     const form = await superValidate(await event.request.clone().formData(), formSchema);
-    console.log(form);
+    console.log('Form: ', form);
 
     const ip = event.getClientAddress();
+    console.log('IP: ', ip);
     if (!form.valid) {
       return fail(400, {
         form
@@ -80,12 +81,12 @@ export const actions: Actions = {
     }
 
     const token = await (await event.request.formData()).get('cf-turnstile-response');
-    console.log(token);
+    console.log('Token: ', token);
     const SECRET_KEY = process.env.CF_TURNSTILE_SECRET_KEY;
 
     // Validate the token
     const { success, error } = await validateToken(token, SECRET_KEY);
-    console.log(success, error);
+    console.log('Success: ', success, 'Error: ', error);
     if (!success) {
       return fail(400, {
         message: error || 'Invalid CAPTCHA'
@@ -115,6 +116,7 @@ export const actions: Actions = {
             ]
           }
         });
+        console.log('Existing application: ', existingApplication);
 
         if (existingApplication !== null) {
           return fail(400, {
