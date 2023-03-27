@@ -1,13 +1,29 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/prisma';
-import { error, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 
 import Discord from 'discord.js';
 import { GatewayIntentBits } from 'discord.js';
 
+interface DiscordUser {
+  id: string
+  username: string
+  global_name?: string
+  display_name?: string
+  avatar?: string
+  avatar_decoration?: string,
+  discriminator: string,
+  public_flags: number,
+  banner?: string
+  banner_color?: string,
+  accent_color?: number
+  avatarUrl?: string,
+}
+
 const baseurl = 'https://discord.com/api/v10/';
 // Function to easily make requests to the Discord API
-function discordAPI(url: string, method: string, body: any, headers: any) {
+// I put question marks to make them optional so we don't have to put null
+function discordAPI(url: string, method: string, body?: any, headers?: {}) {
   // Reference the above fetch example
   const options = {
     method: method,
@@ -16,7 +32,7 @@ function discordAPI(url: string, method: string, body: any, headers: any) {
       ...headers
     }
   };
-  if (body !== null) {
+  if (body) {
     // @ts-expect-error
     options['body'] = body;
   }
@@ -35,9 +51,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
     throw redirect(302, '/login');
   }
 
-  const application = new Promise((resolve, reject) => {
-    resolve(
-      prisma.application.findUnique({
+  const application = await prisma.application.findUnique({
         where: {
           id: params.applicationID
         },
@@ -48,26 +62,21 @@ export const load: PageServerLoad = async ({ params, locals }) => {
             }
           }
         }
-      })
-    );
-  });
+      });
 
-  await application.then((data) => {
-    if (data === null) {
-      throw redirect(302, '/dashboard');
-    }
-  });
+  if(!application || application.data) 
+    throw redirect(302, "/dashboard");
+  
 
-  const userData = new Promise(async (resolve, reject) => {
-    await application.then((data) => {
-      resolve(
-        // @ts-expect-error
-        discordAPI(`users/${data?.discordID}`, 'GET', null, null).then((res) => {
-          return res.json();
-        })
-      );
-    });
-  });
+  // common fetch L 
+  const userData: DiscordUser = await (await discordAPI(`users/${application?.discordID!}`, 'GET')).json();
+
+  // make it load default if no avatar
+  if(userData.avatar) {
+    userData.avatarUrl = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}`;
+  } else {
+    userData.avatarUrl = `https://cdn.discordapp.com/embed/avatars/${parseInt(userData.discriminator) % 5}.png`;
+  }
 
   const applications = prisma.application.findMany({
     select: {
@@ -190,7 +199,8 @@ export const actions: Actions = {
 
       // Send messages
       client.on('ready', async () => {
-        const user = await client.users.fetch(application?.discordID);
+        // force it to take the id (little hack!)
+        const user = await client.users.fetch(application?.discordID!);
         const channel = await client.channels.fetch('1034058501565194310');
         try {
           user.send({

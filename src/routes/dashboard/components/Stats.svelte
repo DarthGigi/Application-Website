@@ -16,7 +16,7 @@
       <div class="obj w-full rounded-lg border-2 border-neutral-700 border-opacity-40 bg-[#050505] bg-cover bg-center bg-no-repeat px-4 py-5 shadow sm:p-6" style="background-image: url('https://cdn.discordapp.com/banners/{userData.id}/{userData.banner}'); background-color: {userData.banner_color ? '#' + userData.banner_color : '#050505'};">
         <dt class="truncate text-sm font-medium text-neutral-400">Profile</dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-neutral-300">
-          <img src="https://cdn.discordapp.com/avatars/{userData.id}/{userData.avatar}" class="inline-block h-8 w-8 rounded-full" alt="User Avatar" />
+          <img src="{userData.avatarUrl}" class="inline-block h-8 w-8 rounded-full" alt="User Avatar" />
           <br />
           {userData.username + '#' + userData.discriminator}
           <!-- Joined at -->
