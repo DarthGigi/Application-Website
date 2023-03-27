@@ -36,7 +36,6 @@ export async function load(event) {
 }
 
 // Cloudflare Turnstile
-
 interface TokenValidateResponse {
   'error-codes': string[];
   success: boolean;
@@ -69,8 +68,19 @@ async function validateToken(token: FormDataEntryValue | string | null, secret: 
 
 export const actions: Actions = {
   default: async (event) => {
-    const formdata = await event.request.formData();
-    const token = formdata.get('cf-turnstile-response');
+    // Validate the form itself
+    const form = await superValidate(await event.request.clone().formData(), formSchema);
+    console.log(form);
+
+    const ip = event.getClientAddress();
+    if (!form.valid) {
+      return fail(400, {
+        form
+      });
+    }
+
+    const token = await (await event.request.formData()).get('cf-turnstile-response');
+    console.log(token);
     const SECRET_KEY = process.env.CF_TURNSTILE_SECRET_KEY;
 
     // Validate the token
@@ -79,16 +89,6 @@ export const actions: Actions = {
     if (!success) {
       return fail(400, {
         message: error || 'Invalid CAPTCHA'
-      });
-    }
-
-    // Validate the form itself
-    const form = await superValidate(event, formSchema);
-
-    const ip = event.getClientAddress();
-    if (!form.valid) {
-      return fail(400, {
-        form
       });
     }
 
