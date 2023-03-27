@@ -58,7 +58,7 @@
         }, 2000);
         formEl.reset();
       } else {
-        submitButtonText = 'Invalid! Please check your inputs.';
+        submitButtonText = result.data.message;
         submitButtonDisabled = true;
         setTimeout(() => {
           submitButtonText = 'Submit';
