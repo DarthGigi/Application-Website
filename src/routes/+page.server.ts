@@ -106,12 +106,12 @@ export const actions: Actions = {
                 discordID: {
                   contains: form.data.discordID
                 }
-              },
-              {
-                ipAddress: {
-                  contains: ip
-                }
               }
+              // {
+              //   ipAddress: {
+              //     contains: ip
+              //   }
+              // }
             ]
           }
         });
