@@ -7,6 +7,7 @@ import { hash } from '$lib/hash';
 import { v4 } from 'uuid';
 import { connectionStatus, connectToDB } from '../../lib/database/index';
 import { ConnectionStates } from 'mongoose';
+import { Secrets } from '$lib/database/models/secrets';
 
 export const load: PageServerLoad = async ({ cookies }) => {
   if (await isSessionValid(cookies)) {
@@ -16,30 +17,32 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 export const actions: Actions = {
   default: async ({ request, cookies }) => {
-    
     const data = Object.fromEntries(await request.formData()) as Record<string, string>;
-    
+
     try {
-        if(connectionStatus.status != ConnectionStates.connected) {
-            await connectToDB();
-        }
-    } catch(e) {console.log(e);}
+      if (connectionStatus.status != ConnectionStates.connected) {
+        await connectToDB();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+    const sDoc = await Secrets.findOneAndDelete({Secret: data.secret});
+    if(!sDoc) return fail(400, { message: 'invalid secret' });
 
     data.username = data.username.toLowerCase();
 
-    if((await Users.find({username: data.username})).length > 0) return fail(400, {"message": "username taken"})
+    if ((await Users.find({ username: data.username })).length > 0) return fail(400, { message: 'username taken' });
 
     const password = await argon2.hash(data.password, { type: argon2.argon2id, memoryCost: 2 ** 16, hashLength: 50 });
-    
+
     //little hack to clear it out of memory for security
     delete data.password;
 
-    
-    const userID = hash(v4())
+    const userID = hash(v4());
 
+    await new Users({ _id: userID, password, username: data.username, admin: false }).save();
 
-    await new Users({_id: userID, password, username: data.username}).save();
-    
     await newSession(cookies, userID);
 
     throw redirect(301, '/dashboard');

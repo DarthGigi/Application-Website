@@ -93,10 +93,12 @@ export const actions: Actions = {
       });
     }
     try {
-      if(connectionStatus.status != ConnectionStates.connected) {
-          await connectToDB();
+      if (connectionStatus.status != ConnectionStates.connected) {
+        await connectToDB();
       }
-    } catch(e) {console.log(e);}
+    } catch (e) {
+      console.log(e);
+    }
     try {
       try {
         const existingApplication: Document[] = await Applications.find({ $or: [{ email: form.data.email }, { discordID: form.data.discordID }, { IP: ip }] });

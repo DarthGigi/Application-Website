@@ -17,10 +17,12 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
   if (!sessionID) return;
 
   try {
-    if(connectionStatus.status != ConnectionStates.connected) {
-        await connectToDB();
+    if (connectionStatus.status != ConnectionStates.connected) {
+      await connectToDB();
     }
-  } catch(e) {console.log(e);}
+  } catch (e) {
+    console.log(e);
+  }
 
   const sess: Session | null = await Sessions.findById(Buffer.from(sessionID, 'hex').toString());
 
@@ -41,10 +43,12 @@ export const isSessionValid = async (cookies: Cookies): Promise<boolean> => {
   if (!sessionID) return false;
 
   try {
-    if(connectionStatus.status != ConnectionStates.connected) {
-        await connectToDB();
+    if (connectionStatus.status != ConnectionStates.connected) {
+      await connectToDB();
     }
-  } catch(e) {console.log(e);}
+  } catch (e) {
+    console.log(e);
+  }
 
   const sess: Session | null = await Sessions.findById(Buffer.from(sessionID, 'hex').toString());
 
@@ -71,7 +75,7 @@ export const newSession = async (cookies: Cookies, UserID: string): Promise<void
     ExpiresAt: new Date().getTime() + MaxSession,
     UserID
   }).save();
-  
-  cookies.set(sessionCookieName, Buffer.from(sessionID).toString("hex"));
+
+  cookies.set(sessionCookieName, Buffer.from(sessionID).toString('hex'));
   return;
 };
