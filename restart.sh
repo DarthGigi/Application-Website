@@ -1,0 +1,1 @@
+npm install && npx prisma generate && npm run build && pm2 restart "JobsWebsite"
