@@ -13,22 +13,6 @@
   import Checkbox from '../components/FormComponents/Checkbox.svelte';
   import SubmitButton from '../components/FormComponents/SubmitButton.svelte';
   import Navbar from '../components/Navbar.svelte';
-  import Blobity from 'blobity';
-  import { onMount } from 'svelte';
-
-  const options = {
-    color: '#404040',
-    licenseKey: 'DarthGigi',
-    zIndex: 1,
-    dotColor: 'rgb(255, 255, 255)',
-    mode: 'bouncy'
-  };
-
-  // onMount(() => {
-  //   // @ts-ignore
-  //   const blobity = new Blobity(options);
-  //   console.log(blobity);
-  // });
 
   let submitButtonDisabled: boolean = false;
   let submitButtonText: string = 'Submit';
