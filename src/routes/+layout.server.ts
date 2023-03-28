@@ -1,10 +1,13 @@
 import type { LayoutServerLoad } from './$types';
 import { validateSession } from '../lib/auth';
+import type { User } from '$lib/database/models/user';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
   const resp = await validateSession(cookies);
   if (resp == null) {
-    return { user: null };
+    return { };
   }
-  return { user: resp.user };
+  // devalue doesn't like "_id"
+  resp.user.password = "";
+  return { user: (resp.user as User) };
 };

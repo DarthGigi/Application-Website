@@ -43,6 +43,8 @@ export const actions: Actions = {
 
     await new Users({ _id: userID, password, username: data.username, admin: false }).save();
 
-    throw redirect(301, '/login');
+    await newSession(cookies, userID)
+
+    throw redirect(301, '/dashboard');
   }
 };

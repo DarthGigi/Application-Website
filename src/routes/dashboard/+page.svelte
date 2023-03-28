@@ -10,9 +10,8 @@
   <div class=" overflow-hidden border-2 border-neutral-700 border-opacity-40 bg-[#050505] shadow sm:rounded-md">
     {#await data.streamed?.applications}
       <p>Loading...</p>
-    {:then applicationdata}
-      {#if applicationdata}
-        {#each applicationdata as application}
+    {:then data}
+        {#each data as application}
           <ul class="divide-y divide-neutral-800">
             <li>
               <a href="/dashboard/" class="block hover:bg-neutral-800">
@@ -54,7 +53,6 @@
             </li>
           </ul>
         {/each}
-      {/if}
     {/await}
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema } from 'mongoose';
 import { Connection } from '..';
 
 export interface Session {
