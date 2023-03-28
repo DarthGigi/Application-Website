@@ -26,13 +26,18 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
 
   const sess: Session | null = await Sessions.findById(Buffer.from(sessionID, 'hex').toString());
 
-  if (sess == null) return;
+  if (sess == null || sess.ExpiresAt < new Date().getTime()) {
+    cookies.delete(sessionCookieName);
+    return;
+  }
 
-  if (sess.ExpiresAt < new Date().getTime()) return;
 
   const user = await Users.findById(sess.UserID);
 
-  if (user == null) return;
+  if (user == null) {
+    cookies.delete(sessionCookieName);
+    return;
+  }
 
   return { session: sess, user };
 };
@@ -40,7 +45,8 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
 export const isSessionValid = async (cookies: Cookies): Promise<boolean> => {
   const sessionID = cookies.get(sessionCookieName);
 
-  if (!sessionID) return false;
+  if (!sessionID) 
+    return false;
 
   try {
     if (connectionStatus.status != ConnectionStates.connected) {
@@ -52,9 +58,10 @@ export const isSessionValid = async (cookies: Cookies): Promise<boolean> => {
 
   const sess: Session | null = await Sessions.findById(Buffer.from(sessionID, 'hex').toString());
 
-  if (sess == null) return false;
-
-  if (sess.ExpiresAt < new Date().getTime()) return false;
+  if (sess == null || sess.ExpiresAt < new Date().getTime()) {
+    cookies.delete(sessionCookieName);
+    return false;
+  }
 
   return true;
 };
@@ -78,4 +85,30 @@ export const newSession = async (cookies: Cookies, UserID: string): Promise<void
 
   cookies.set(sessionCookieName, Buffer.from(sessionID).toString('hex'));
   return;
+};
+
+export const getUserFromSession = async (cookies: Cookies): Promise<User> => {
+  const sessionID = cookies.get(sessionCookieName);
+
+  if (!sessionID) return {} as User;
+
+  try {
+    if (connectionStatus.status != ConnectionStates.connected) {
+      await connectToDB();
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  const sess: Session | null = await Sessions.findById(Buffer.from(sessionID, 'hex').toString());
+
+  if (sess == null) return {} as User;
+
+  if (sess.ExpiresAt < new Date().getTime()) return {} as User;
+
+  const user = await Users.findById(sess.UserID);
+
+  if (user == null) return {} as User;
+
+  return user;
 };

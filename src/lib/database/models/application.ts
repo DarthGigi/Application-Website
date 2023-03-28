@@ -47,4 +47,4 @@ const schema = new Schema<Application>(
   { versionKey: false }
 );
 
-export const Applications = Connection.Mongoose.model('Applications', schema);
+export const Applications = Connection.Mongoose.model('applications', schema);

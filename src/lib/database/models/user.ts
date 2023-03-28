@@ -18,4 +18,4 @@ const schema = new Schema<User>(
   { versionKey: false }
 );
 
-export const Users = Connection.Mongoose.model('Users', schema);
+export const Users = Connection.Mongoose.model('users', schema);

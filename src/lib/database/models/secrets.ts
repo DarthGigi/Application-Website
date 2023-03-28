@@ -2,7 +2,7 @@ import { Schema } from 'mongoose';
 import { Connection } from '..';
 
 export interface Secret {
-    _id: string;
+  _id: string;
   Secret: string;
   CreatedAt: Date;
   CreatedBy: string;
@@ -13,12 +13,12 @@ export interface Secret {
 const schema = new Schema<Secret>(
   {
     _id: { type: String, required: true },
-    CreatedBy: {type: String, required: true},
-    Secret: {type: String, required: true},
-    CreatedAt: {type: Date, required: true},
-    GiveAdmin: {type: Boolean, required: true}
+    CreatedBy: { type: String, required: true },
+    Secret: { type: String, required: true },
+    CreatedAt: { type: Date, required: true },
+    GiveAdmin: { type: Boolean, required: true }
   },
   { versionKey: false }
 );
 
-export const Secrets = Connection.Mongoose.model('Secrets', schema);
+export const Secrets = Connection.Mongoose.model('secrets', schema);

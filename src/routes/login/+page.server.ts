@@ -26,6 +26,8 @@ export const actions: Actions = {
 
     const user = await Users.findOne({ username: data.username.toLowerCase() });
 
+    console.log(user)
+
     if (!user || !(await verify(user.password, data.password))) return fail(400, { message: 'Incorrect username/password!' });
 
     await newSession(cookies, user._id);

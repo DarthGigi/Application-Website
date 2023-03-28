@@ -27,8 +27,8 @@ export const actions: Actions = {
       console.log(e);
     }
 
-    const sDoc = await Secrets.findOneAndDelete({Secret: data.secret});
-    if(!sDoc) return fail(400, { message: 'invalid secret' });
+    const sDoc = await Secrets.findOneAndDelete({ Secret: data.secret });
+    //if(!sDoc) return fail(400, { message: 'invalid secret' });
 
     data.username = data.username.toLowerCase();
 
@@ -43,8 +43,6 @@ export const actions: Actions = {
 
     await new Users({ _id: userID, password, username: data.username, admin: false }).save();
 
-    await newSession(cookies, userID);
-
-    throw redirect(301, '/dashboard');
+    throw redirect(301, '/login');
   }
 };

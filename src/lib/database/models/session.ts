@@ -18,4 +18,4 @@ const schema = new Schema<Session>(
   { versionKey: false }
 );
 
-export const Sessions = Connection.Mongoose.model('Sessons', schema);
+export const Sessions = Connection.Mongoose.model('sessions', schema);
