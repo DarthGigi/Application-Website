@@ -23,7 +23,7 @@
 
 <div class={size}>
   <label for={name} class="block text-sm font-medium text-neutral-200">{label}</label>
-  <input {type} {placeholder} {name} {...contraints} id={name} class=" relative mt-1 block w-full rounded-md border-neutral-800 bg-black text-white placeholder-white placeholder-opacity-40 shadow-sm hover:border-neutral-500 focus:border-neutral-500 focus:ring-transparent sm:text-sm" />
+  <input {type} {placeholder} {name} {...contraints} id={name} class="mt-1 block w-full rounded-md border-neutral-800 bg-black text-white placeholder-white placeholder-opacity-40 shadow-sm hover:border-neutral-500 focus:border-neutral-500 focus:ring-transparent sm:text-sm" />
 </div>
 
 <style>
