@@ -12,6 +12,23 @@
   import CheckboxContainer from '../components/FormComponents/CheckboxContainer.svelte';
   import Checkbox from '../components/FormComponents/Checkbox.svelte';
   import SubmitButton from '../components/FormComponents/SubmitButton.svelte';
+  import Navbar from '../components/Navbar.svelte';
+  import Blobity from 'blobity';
+  import { onMount } from 'svelte';
+
+  const options = {
+    color: '#404040',
+    licenseKey: 'DarthGigi',
+    zIndex: 1,
+    dotColor: 'rgb(255, 255, 255)',
+    mode: 'bouncy'
+  };
+
+  // onMount(() => {
+  //   // @ts-ignore
+  //   const blobity = new Blobity(options);
+  //   console.log(blobity);
+  // });
 
   let submitButtonDisabled: boolean = false;
   let submitButtonText: string = 'Submit';
@@ -58,6 +75,7 @@
         }, 2000);
         formEl.reset();
       } else {
+        // @ts-ignore
         submitButtonText = result.data.message;
         submitButtonDisabled = true;
         setTimeout(() => {
@@ -79,11 +97,10 @@
   });
 </script>
 
-<svelte:head>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-</svelte:head>
+<Navbar />
+
 <form method="post" id="form" use:enhance>
-  <div class="space-y-6 px-4 py-8 sm:px-8 md:px-16 lg:px-32 xl:px-48 2xl:px-72">
+  <div id="#FormQuestions" class="flex flex-col flex-wrap space-y-6 px-4 py-8 sm:px-8 md:px-16 lg:px-32 xl:px-48 2xl:px-72">
     <FormQuestionContainer title="Personal Information" description="A few questions about you">
       <Input label="Name" placeholder="Craig" name="name" size="short" type="text" contraints={$constraints.name} />
       <Input label="Email" placeholder="craig@sirius.menu" name="email" size="short" type="email" contraints={$constraints.email} />
@@ -92,7 +109,7 @@
       <Input label="How did you find out about Sirius?" placeholder="A friend" name="siriusDiscovery" type="text" contraints={$constraints.siriusDiscovery} />
     </FormQuestionContainer>
     <FormQuestionContainer title="General Questions" description="Questions about stuff you will encounter while being a support member">
-      <TextArea label="A user opens a ticket stating they have purchased Sirius Pro with stripe 30 minutes ago but our logs show nothing about it. What would you do?" placeholder="" name="question1" constraints={$constraints.question1} />
+      <TextArea label="A user opens a ticket stating they have purchased Sirius Pro with stripe 30 minutes ago but our logs show nothing about it. What would you do?" name="question1" constraints={$constraints.question1} />
 
       <RadioContainer title="Which of the following statements is true?" name="question2">
         <Radio description="Support members must use grammar and proper behavior at all times" value="1" name="question2" id="question2-1" />
@@ -122,9 +139,9 @@
         <Radio description="Talk about it in staff-chat" value="4" name="question5" id="question5-4" />
       </RadioContainer>
 
-      <TextArea label="What would you do if a user comes with a problem which you don't know how to handle?" placeholder="" name="question6" constraints={$constraints.question6} />
+      <TextArea label="What would you do if a user comes with a problem which you don't know how to handle?" name="question6" constraints={$constraints.question6} />
 
-      <TextArea label="What would you do if a user is becoming frustrated/acting like a karen/taking too long?" placeholder="" name="question7" constraints={$constraints.question7} />
+      <TextArea label="What would you do if a user is becoming frustrated/acting like a karen/taking too long?" name="question7" constraints={$constraints.question7} />
 
       <RadioContainer title="What would you do if a user doesn't speak english?" name="question8">
         <Radio description="Ignore them" value="1" name="question8" id="question8-1" />
@@ -134,9 +151,9 @@
       </RadioContainer>
     </FormQuestionContainer>
     <FormQuestionContainer title="Personal Questions" description="A few personal questions">
-      <TextArea label="Why should we choose you over other applicants?" placeholder="" name="question9" constraints={$constraints.question9} />
-      <TextArea label="List 3 pros and 3 cons about you (as a support member)" placeholder="" name="question10" constraints={$constraints.question10} />
-      <TextArea label="Tell us a bit about yourself, possibly outside of Social Media" placeholder="" name="question11" constraints={$constraints.question11} />
+      <TextArea label="Why should we choose you over other applicants?" name="question9" constraints={$constraints.question9} />
+      <TextArea label="List 3 pros and 3 cons about you (as a support member)" name="question10" constraints={$constraints.question10} />
+      <TextArea label="Tell us a bit about yourself, possibly outside of Social Media" name="question11" constraints={$constraints.question11} />
     </FormQuestionContainer>
 
     <CheckboxContainer>
