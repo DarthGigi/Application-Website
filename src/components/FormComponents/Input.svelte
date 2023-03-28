@@ -22,6 +22,14 @@
 </script>
 
 <div class={size}>
-  <label for={name} class="block text-sm font-medium text-neutral-200">{label}</label>
-  <input {type} {placeholder} {name} {...contraints} id={name} class="plac:border-red-800 mt-1 block w-full rounded-md border-neutral-800 bg-black text-white placeholder-white placeholder-opacity-40 shadow-sm hover:border-neutral-500 focus:border-neutral-500 focus:ring-transparent sm:text-sm" />
+  <label for={name} class="z-[3] block text-sm font-medium text-neutral-200">{label}</label>
+  <input data-blobity data-blobity-offset-x="5" data-blobity-offset-y="5" {type} {placeholder} {name} {...contraints} id={name} class=" relative z-[3] mt-1 block w-full rounded-md border-neutral-800 bg-black text-white placeholder-white placeholder-opacity-40 shadow-sm hover:border-neutral-500 focus:border-neutral-500 focus:ring-transparent sm:text-sm" />
 </div>
+
+<style>
+  input:not(:focus):not(:placeholder-shown):invalid,
+  input:not(:placeholder-shown):invalid {
+    --tw-border-opacity: 1;
+    border-color: rgb(153 27 27 / var(--tw-border-opacity));
+  }
+</style>
