@@ -3,11 +3,11 @@ import { CF_TURNSTILE_SECRET_KEY } from '$env/static/private';
 import { fail } from '@sveltejs/kit';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
-import { Applications, ApplicationStatus } from '../lib/database/models/application';
-import type { FormResponses, FormAgreements } from '../lib/database/models/application';
+import { Applications } from '$lib/server/database/models/application';
+import  {ApplicationStatus, type FormResponses, type FormAgreements } from '$lib/types/application';
 import { v4 } from 'uuid';
-import { connectionStatus, connectToDB } from '../lib/database/index';
-import { hash } from '$lib/hash';
+import { connectionStatus, connectToDB } from '$lib/server/database/index';
+import { hash } from '$lib/server/hash';
 import { ConnectionStates } from 'mongoose';
 
 const formSchema = z.object({

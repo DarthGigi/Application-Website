@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ApplicationStatus } from '$lib/database/models/application';
+  import { ApplicationStatus } from '$lib/types/application';
   import Header from './components/Header.svelte';
   export let data;
   //@ts-nocheck
@@ -10,11 +10,11 @@
   <div class=" overflow-hidden border-2 border-neutral-700 border-opacity-40 bg-[#050505] shadow sm:rounded-md">
     {#await data.streamed?.applications}
       <p>Loading...</p>
-    {:then data}
-        {#each data as application}
+    {:then d}
+        {#each d as application}
           <ul class="divide-y divide-neutral-800">
             <li>
-              <a href="/dashboard/" class="block hover:bg-neutral-800">
+              <a href="/dashboard/{application._id}" class="block hover:bg-neutral-800">
                 <div class="px-4 py-4 sm:px-6">
                   <div class="flex items-center justify-between">
                     <p class="truncate text-sm font-medium text-neutral-200">{application.name}</p>

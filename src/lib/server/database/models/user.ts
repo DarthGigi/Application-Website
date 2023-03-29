@@ -1,5 +1,4 @@
-import { Schema } from 'mongoose';
-import { Connection } from '..';
+import mongoose, { Schema } from 'mongoose';
 
 export interface User {
   _id: string;
@@ -18,4 +17,4 @@ const schema = new Schema<User>(
   { versionKey: false }
 );
 
-export const Users = Connection.Mongoose.model('users', schema);
+export const Users = mongoose.connection.model('users', schema);

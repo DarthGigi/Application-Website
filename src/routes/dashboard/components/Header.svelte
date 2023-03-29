@@ -48,7 +48,7 @@
       </div>
       <div class="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
         <div>
-          <p class="text-neutral-300">{$page.data.user.userName}</p>
+          <p class="text-neutral-300">{$page.data.user.username.charAt(0).toUpperCase() + $page.data.user.username.substring(1).toLowerCase()}</p>
         </div>
         <!-- Profile dropdown -->
         <div class="relative ml-4 flex-shrink-0">
@@ -80,7 +80,7 @@
             <img class="h-10 w-10 rounded-full" src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg" alt="User" />
           </div>
           <div class="ml-3">
-            <div class="text-base font-medium text-white">{$page.data.user.userName}</div>
+            <div class="text-base font-medium text-white">{$page.data.user.username}</div>
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 import type { LayoutServerLoad } from './$types';
-import { validateSession } from '../lib/auth';
-import type { User } from '$lib/database/models/user';
+import { validateSession } from '../lib/server/auth';
+import type { User } from '$lib/server/database/models/user';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
   const resp = await validateSession(cookies);
@@ -9,5 +9,5 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
   }
   // devalue doesn't like "_id"
   resp.user.password = '';
-  return { user: structuredClone(resp.user as User) };
+  return { user: structuredClone(resp.user.toObject({getters: false}) as User) };
 };

@@ -1,9 +1,9 @@
 import type { Cookies } from '@sveltejs/kit';
-import { Sessions, type Session } from '../database/models/session';
-import { connectionStatus, connectToDB } from '../database/index';
-import { Users, type User } from '../database/models/user';
+import { Sessions, type Session } from '$lib/server/database/models/session';
+import { connectionStatus, connectToDB } from '$lib/server/database/index';
+import { Users, type User } from '$lib/server/database/models/user';
 import { v4 } from 'uuid';
-import { hash } from '$lib/hash';
+import { hash } from '$lib/server/hash';
 import { ConnectionStates } from 'mongoose';
 
 // one week
@@ -31,9 +31,7 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
     return;
   }
 
-
   const user = await Users.findById(sess.UserID);
-
   if (user == null) {
     cookies.delete(sessionCookieName);
     return;
@@ -86,6 +84,13 @@ export const newSession = async (cookies: Cookies, UserID: string): Promise<void
   cookies.set(sessionCookieName, Buffer.from(sessionID).toString('hex'));
   return;
 };
+
+export const deleteSession = async (cookies: Cookies): Promise<void> => {
+  const sess = cookies.get(sessionCookieName);
+  if(!sess) return;
+  await Sessions.findByIdAndDelete(Buffer.from(sess,"hex").toString())
+  cookies.delete(sessionCookieName);
+}
 
 export const getUserFromSession = async (cookies: Cookies): Promise<User> => {
   const sessionID = cookies.get(sessionCookieName);

@@ -1,5 +1,4 @@
-import { Schema } from 'mongoose';
-import { Connection } from '..';
+import mongoose, { Schema } from 'mongoose';
 
 export interface Session {
   _id: string;
@@ -18,4 +17,4 @@ const schema = new Schema<Session>(
   { versionKey: false }
 );
 
-export const Sessions = Connection.Mongoose.model('sessions', schema);
+export const Sessions = mongoose.connection.model('sessions', schema);

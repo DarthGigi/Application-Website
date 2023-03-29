@@ -1,13 +1,13 @@
 import type { Actions, PageServerLoad } from './$types';
 import { redirect, fail } from '@sveltejs/kit';
-import { Users } from '../../lib/database/models/user';
-import { isSessionValid, newSession } from '../../lib/auth/index';
+import { Users } from '$lib/server/database/models/user';
+import { isSessionValid, newSession } from '$lib/server/auth';
 import * as argon2 from 'argon2';
-import { hash } from '$lib/hash';
+import { hash } from '$lib/server/hash';
 import { v4 } from 'uuid';
-import { connectionStatus, connectToDB } from '../../lib/database/index';
+import { connectionStatus, connectToDB } from '$lib/server/database/';
 import { ConnectionStates } from 'mongoose';
-import { Secrets } from '$lib/database/models/secrets';
+import { Secrets } from '$lib/server/database/models/secrets';
 
 export const load: PageServerLoad = async ({ cookies }) => {
   if (await isSessionValid(cookies)) {

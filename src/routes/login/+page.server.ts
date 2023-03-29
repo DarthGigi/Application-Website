@@ -1,9 +1,9 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
-import { isSessionValid, newSession } from '$lib/auth';
+import { isSessionValid, newSession } from '$lib/server/auth';
 import { verify } from 'argon2';
-import { Users } from '$lib/database/models/user';
-import { connectionStatus, connectToDB } from '$lib/database';
+import { Users } from '$lib/server/database/models/user';
+import { connectionStatus, connectToDB } from '$lib/server/database';
 import { ConnectionStates } from 'mongoose';
 
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -25,8 +25,6 @@ export const actions: Actions = {
     }
 
     const user = await Users.findOne({ username: data.username.toLowerCase() });
-
-    console.log(user)
 
     if (!user || !(await verify(user.password, data.password))) return fail(400, { message: 'Incorrect username/password!' });
 
