@@ -48,14 +48,14 @@
       </div>
       <div class="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
         <div>
-          <p class="text-neutral-300">{$page.data.user.discord.User.username}#{$page.data.user.discord.User.discriminator}</p>
+          <p class="text-neutral-300">{$page.data.user.discord.User.username}</p>
         </div>
         <!-- Profile dropdown -->
         <div class="relative ml-4 flex-shrink-0">
           <div>
             <button on:click={() => (isOpen = !isOpen)} type="button" class="flex rounded-full bg-neutral-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-transparent focus:ring-offset-2 focus:ring-offset-neutral-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
               <span class="sr-only">Open user menu</span>
-              <img class="h-8 w-8 rounded-full" src="{$page.data.user.discord.User.avatar}" alt="User" />
+              <img class="h-8 w-8 rounded-full" src={$page.data.user.discord.User.avatar} alt="User" />
             </button>
           </div>
 
