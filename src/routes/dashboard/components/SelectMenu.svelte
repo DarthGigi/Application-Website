@@ -44,35 +44,30 @@
         {:then applications}
           {#each applications as application}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <li
-              class="relative mx-1 my-1 cursor-pointer select-none rounded py-2 pl-3 pr-9 text-neutral-200 transition-colors duration-500 hover:bg-neutral-900 hover:text-white"
-              id="listbox-option-{application.id}"
-              role="option"
-              on:click={() => {
-                window.location.href = `/dashboard/${application.id}`;
-              }}
-            >
-              <div class="flex items-center">
-                {#if application.status === 'PENDING'}
-                  <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-orange-500" aria-hidden="true" />
-                {:else if application.status === 'APPROVED'}
-                  <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-500" aria-hidden="true" />
-                {:else if application.status === 'DENIED'}
-                  <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-red-500" aria-hidden="true" />
-                {/if}
-                <span class="ml-3 block truncate font-normal">
-                  {application.name}
-                </span>
-              </div>
+            <li>
+              <a href="/dashboard/{application._id}" class=" relative mx-1 my-1 list-item cursor-pointer select-none rounded py-2 pl-3 pr-9 text-neutral-200 transition-colors duration-500 hover:bg-neutral-900 hover:text-white" id="listbox-option-{application.id}" role="option">
+                <div class="flex items-center">
+                  {#if application.status === 'PENDING'}
+                    <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-orange-500" aria-hidden="true" />
+                  {:else if application.status === 'APPROVED'}
+                    <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-500" aria-hidden="true" />
+                  {:else if application.status === 'DENIED'}
+                    <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-red-500" aria-hidden="true" />
+                  {/if}
+                  <span class="ml-3 block truncate font-normal">
+                    {application.name}
+                  </span>
+                </div>
 
-              {#if $page.data.application !== undefined && application.id === $page.data.application.id}
-                <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-white">
-                  <!-- Heroicon name: mini/check -->
-                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
-                  </svg>
-                </span>
-              {/if}
+                {#if $page.data.application !== undefined && application.id === $page.data.application.id}
+                  <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-white">
+                    <!-- Heroicon name: mini/check -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                {/if}
+              </a>
             </li>
           {/each}
         {/await}

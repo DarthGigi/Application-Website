@@ -88,12 +88,12 @@ export const actions: Actions = {
     const SECRET_KEY = CF_TURNSTILE_SECRET_KEY;
 
     // Validate the token
-    const { success, error } = await validateToken(token, SECRET_KEY);
-    if (!success) {
-      return fail(400, {
-        message: error || 'Invalid CAPTCHA'
-      });
-    }
+    // const { success, error } = await validateToken(token, SECRET_KEY);
+    // if (!success) {
+    //   return fail(400, {
+    //     message: error || 'Invalid CAPTCHA'
+    //   });
+    // }
     try {
       if (connectionStatus.status != ConnectionStates.connected) {
         await connectToDB();

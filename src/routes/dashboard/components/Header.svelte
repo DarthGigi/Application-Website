@@ -10,9 +10,9 @@
 
 <header
   on:mouseleave={() => {
-    open = false;
-    isOpen = false;
-    isOpenMenu = false;
+    // open = false;
+    // isOpen = false;
+    // isOpenMenu = false;
   }}
   class="sticky top-0 z-10 border-b-2 border-b-neutral-700 border-opacity-40 bg-[#050505]"
 >
@@ -47,15 +47,17 @@
         </button>
       </div>
       <div class="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-        <div>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div on:click={() => (isOpen = !isOpen)} class="cursor-pointer">
           <p class="text-neutral-300">{$page.data.user.discord.User.username}</p>
         </div>
         <!-- Profile dropdown -->
-        <div class="relative ml-4 flex-shrink-0">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div on:click={() => (isOpen = !isOpen)} class="relative flex-shrink-0 cursor-pointer pl-4">
           <div>
             <button on:click={() => (isOpen = !isOpen)} type="button" class="flex rounded-full bg-neutral-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-transparent focus:ring-offset-2 focus:ring-offset-neutral-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
               <span class="sr-only">Open user menu</span>
-              <img class="h-8 w-8 rounded-full" src={$page.data.user.discord.User.avatar} alt="User" />
+              <img class="pointer-events-none h-8 w-8 rounded-full" src={$page.data.user.discord.User.avatar} alt="User" />
             </button>
           </div>
 
@@ -77,7 +79,7 @@
       <div class="border-t border-neutral-700 pb-3 pt-4">
         <div class="flex items-center px-4">
           <div class="flex-shrink-0">
-            <img class="h-10 w-10 rounded-full" src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg" alt="User" />
+            <img class="pointer-events-none h-10 w-10 rounded-full" src={$page.data.user.discord.User.avatar} alt="User" />
           </div>
           <div class="ml-3">
             <div class="text-base font-medium text-white">{$page.data.user.discord.User.username}</div>
