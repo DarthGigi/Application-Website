@@ -10,4 +10,4 @@ const schema = new Schema<User>(
   { versionKey: false }
 );
 
-export const Users = mongoose.connection.model('users', schema);
+export default mongoose.connection.models.users || mongoose.connection.model('users', schema);

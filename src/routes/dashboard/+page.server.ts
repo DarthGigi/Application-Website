@@ -1,15 +1,16 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from '../$types';
-import { Applications } from '$lib/server/database/models/application';
-import { validateSession } from '../../lib/server/auth/index';
+import Applications from '$lib/server/database/models/application';
+import { isSessionValid } from '../../lib/server/auth/index';
 import { connectionStatus, connectToDB } from '$lib/server/database';
 import { ConnectionStates } from 'mongoose';
 import type { Application, FormResponses, FormAgreements } from '$lib/types/application';
 
 export const load: PageServerLoad = async ({ cookies }) => {
-  const s = await validateSession(cookies);
-  if (!s || !s.session) {
-    throw redirect(301, '/login');
+  const s = await isSessionValid(cookies);
+  if (!s) {
+    console.log(s);
+    throw redirect(302, '/login');
   }
   // Load all applications
   try {

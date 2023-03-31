@@ -19,3 +19,10 @@ export interface User {
   discord: DiscordUser;
   reviewer: boolean;
 }
+
+export interface Session {
+  _id: string;
+  UserID: string;
+  ExpiresAt: number;
+  //IP: string;
+}

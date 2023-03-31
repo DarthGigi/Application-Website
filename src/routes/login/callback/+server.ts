@@ -1,15 +1,16 @@
 import { hash } from '$lib/server/hash';
-import { json, text } from '@sveltejs/kit';
+import { json, redirect, text } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import type { OAuthResponse } from '$lib/types/discord';
 import { ExchangeAccessToken } from '$lib/server/oauth';
 import { GenerateUserFromAccessToken } from '$lib/server/oauth/discord/';
 import { connectionStatus, connectToDB } from '$lib/server/database';
 import { ConnectionStates } from 'mongoose';
-import { Users } from '../../../lib/server/database/models/user';
+import Users from '$lib/server/database/models/user';
 import { v4 } from 'uuid';
+import { newSession } from '$lib/server/auth';
 
-export const GET = (async ({ url, getClientAddress }) => {
+export const GET = (async ({ url, getClientAddress, cookies }) => {
   // 1 = code, 2 = state
   const responses: OAuthResponse[] = [];
 
@@ -20,16 +21,16 @@ export const GET = (async ({ url, getClientAddress }) => {
   const resp = await ExchangeAccessToken(responses[0].value);
   resp.expires_at = new Date().getTime() / 1000 + resp.expires_in;
   const us = await GenerateUserFromAccessToken(resp);
-  
+
   try {
     if (connectionStatus.status != ConnectionStates.connected) {
       await connectToDB();
     }
-  // eslint-disable-next-line no-empty
+    // eslint-disable-next-line no-empty
   } catch (_) {}
-  
-  const existing = await Users.findOne({"discord.User.id": us.discord.User.id});
-  if(!existing) {
+
+  const existing = await Users.findOne({ 'discord.User.id': us.discord.User.id });
+  if (!existing) {
     us._id = hash(v4());
     await new Users(us).save();
   } else {
@@ -39,7 +40,7 @@ export const GET = (async ({ url, getClientAddress }) => {
   }
 
   // here we create the session:
+  await newSession(cookies, us._id);
 
-
-  return json({"message": "ok"});
+  throw redirect(302,us.reviewer ? "/dashboard" : "/?alert=You do not have the permissions to view the dashboard")
 }) satisfies RequestHandler;

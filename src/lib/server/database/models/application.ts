@@ -18,4 +18,4 @@ const schema = new Schema<Application>(
   { versionKey: false }
 );
 
-export const Applications = mongoose.connection.model('applications', schema);
+export default mongoose.connection.models.applications || mongoose.connection.model('applications', schema);

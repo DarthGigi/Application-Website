@@ -4,6 +4,7 @@ import { dev } from '$app/environment';
 import { PUBLIC_DISCORD_OAUTH_ID } from '$env/static/public';
 import { DISCORD_OAUTH_SECRET } from '$env/static/private';
 import type { DiscordAccessTokenResponse } from '$lib/types/discord';
+import { error } from '@sveltejs/kit';
 
 const oauthAPIBase = 'https://discord.com/api/oauth2/';
 
@@ -20,6 +21,10 @@ export const ExchangeAccessToken = async (code: string): Promise<DiscordAccessTo
   body.set('code', code);
   body.set('redirect_uri', callBackURL);
   const resp = await fetch(oauthAPIBase + 'token', { body, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, method: 'POST' });
+  if (resp.status != 200) {
+    // TODO: Make proper error lol
+    throw error(400, (await resp.json()).error_description);
+  }
   return (await resp.json()) as DiscordAccessTokenResponse;
 };
 

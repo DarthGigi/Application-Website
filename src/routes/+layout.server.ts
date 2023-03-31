@@ -6,7 +6,6 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
   if (resp == null) {
     return {};
   }
-  // devalue doesn't like "_id"
-  resp.user.password = '';
+  console.log(resp.user);
   return { user: structuredClone(resp.user) };
 };

@@ -21,8 +21,8 @@ async function getData<T>(endpoint: string, tokenInfo: TokenInfo): Promise<Await
   ).json();
 }
 
-function getEnding(input: string): "png" | "gif" {
-  return input.startsWith("a_") ? "gif" : "png";
+function getEnding(input: string): 'png' | 'gif' {
+  return input.startsWith('a_') ? 'gif' : 'png';
 }
 
 export const GenerateUserFromAccessToken = async (resp: DiscordAccessTokenResponse): Promise<User> => {

@@ -1,7 +1,8 @@
 import type { Cookies } from '@sveltejs/kit';
-import { Sessions, type Session } from '$lib/server/database/models/session';
+import Sessions from '$lib/server/database/models/session';
 import { connectionStatus, connectToDB } from '$lib/server/database/index';
-import { Users, type User } from '$lib/server/database/models/user';
+import Users from '$lib/server/database/models/user';
+import type { User, Session } from '$lib/server/types/database';
 import { v4 } from 'uuid';
 import { hash } from '$lib/server/hash';
 import { ConnectionStates } from 'mongoose';
@@ -36,12 +37,13 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
     return;
   }
 
-  return { session: sess, user };
+  return { session: sess, user: (user.toObject({getters: false}) as User) };
 };
 
 export const isSessionValid = async (cookies: Cookies): Promise<boolean> => {
   const sessionID = cookies.get(sessionCookieName);
 
+  console.log(sessionID);
   if (!sessionID) return false;
 
   try {
@@ -78,7 +80,7 @@ export const newSession = async (cookies: Cookies, UserID: string): Promise<void
     UserID
   }).save();
 
-  cookies.set(sessionCookieName, Buffer.from(sessionID).toString('hex'));
+  cookies.set(sessionCookieName, Buffer.from(sessionID).toString('hex'), {path: '/', sameSite: 'lax'});
   return;
 };
 
