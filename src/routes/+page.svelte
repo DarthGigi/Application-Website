@@ -50,6 +50,8 @@
     },
     onResult: ({ result, formEl, cancel }) => {
       if (result.type === 'success') {
+        // @ts-ignore
+        open(result.data.redirectUrl, "authorizeDiscord", "width=400,height=600");
         submitButtonText = 'Submitted!';
         submitButtonDisabled = true;
         setTimeout(() => {

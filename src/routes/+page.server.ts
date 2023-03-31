@@ -1,6 +1,6 @@
 import type { Actions } from './$types';
 import { CF_TURNSTILE_SECRET_KEY } from '$env/static/private';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
 import Applications from '$lib/server/database/models/application';
@@ -10,6 +10,8 @@ import { connectionStatus, connectToDB } from '$lib/server/database/index';
 import { hash } from '$lib/server/hash';
 import { ConnectionStates } from 'mongoose';
 import type { PageServerLoad } from './$types';
+import type { Application } from '$lib/types/application';
+import { GetAuthorizationURL } from '$lib/server/oauth';
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -127,19 +129,24 @@ export const actions: Actions = {
       Info: form.data.contactInfo == 'on'
     };
 
+
     // create and save new app
-    await new Applications({
+    const app: Application = {
       _id: v4(),
       name: form.data.name,
       email: form.data.email,
-      discordID: form.data.discordID,
       responses: JSON.stringify(responses),
       agreements: JSON.stringify(agreements),
       IP: ip,
       createdAt: new Date(),
       status: ApplicationStatus.PENDING
-    }).save();
+    }
 
-    return { form };
+    await new Applications(app).save()
+
+    return {
+      redirectUrl: GetAuthorizationURL(app._id, "consent"),
+      form
+    }
   }
 };

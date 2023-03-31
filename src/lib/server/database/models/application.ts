@@ -1,19 +1,21 @@
 import { Schema } from 'mongoose';
 import mongoose from 'mongoose';
 import type { Application } from '$lib/types/application';
+import type { DiscordUser } from '$lib/server/types/database';
 
 const schema = new Schema<Application>(
   {
     _id: { type: String, required: true },
     name: { type: String, required: true },
     email: { type: String, required: true },
-    discordID: { type: String, required: true },
+    discord: { type: Object, required: false, default: {} as DiscordUser },
     responses: { type: String, required: true },
     agreements: { type: String, required: true },
     IP: { type: String, required: true },
     status: { type: Number, required: true },
     createdAt: { type: Date, required: true },
-    updatedAt: { type: Date, required: false }
+    updatedAt: { type: Date, required: false },
+    Reviewers: {type: [String], required: false, default: []},
   },
   { versionKey: false }
 );

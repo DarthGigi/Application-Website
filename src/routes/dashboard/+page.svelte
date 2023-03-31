@@ -34,7 +34,7 @@
                       {application.email}
                     </p>
                     <p class="mt-2 flex items-center text-sm text-neutral-400 sm:ml-6 sm:mt-0">
-                      {application.discordID}
+                      {application.discord?.User.id}
                     </p>
                   </div>
                   <div class="mt-2 flex items-center text-sm text-neutral-400 sm:mt-0">

@@ -1,5 +1,5 @@
 import { hash } from '$lib/server/hash';
-import { json, redirect, text } from '@sveltejs/kit';
+import { error, redirect, text } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import type { OAuthResponse } from '$lib/types/discord';
 import { ExchangeAccessToken } from '$lib/server/oauth';
@@ -9,6 +9,7 @@ import { ConnectionStates } from 'mongoose';
 import Users from '$lib/server/database/models/user';
 import { v4 } from 'uuid';
 import { newSession } from '$lib/server/auth';
+import Applications from '$lib/server/database/models/application';
 
 export const GET = (async ({ url, getClientAddress, cookies }) => {
   // 1 = code, 2 = state
@@ -20,7 +21,15 @@ export const GET = (async ({ url, getClientAddress, cookies }) => {
 
   const resp = await ExchangeAccessToken(responses[0].value);
   resp.expires_at = new Date().getTime() / 1000 + resp.expires_in;
+
   const us = await GenerateUserFromAccessToken(resp);
+  const appID = cookies.get("app")
+  if(appID && appID.length > 0) {
+    await Applications.findByIdAndUpdate(Buffer.from(appID, "hex").toString(), {$set: {discord: us.discord}});
+    cookies.delete("app");
+    cookies.set("sucess", "true")
+    throw redirect(302, "/");
+  }
 
   try {
     if (connectionStatus.status != ConnectionStates.connected) {
@@ -38,9 +47,9 @@ export const GET = (async ({ url, getClientAddress, cookies }) => {
     us._id = existing._id;
     await Users.findByIdAndUpdate(existing._id, us);
   }
-
+  if(!us.reviewer) throw error(401, "You do not have access to the dashboard.")
   // here we create the session:
   await newSession(cookies, us._id);
 
-  throw redirect(302,us.reviewer ? "/dashboard" : "/?alert=You do not have the permissions to view the dashboard")
+  throw redirect(302, "/")
 }) satisfies RequestHandler;
