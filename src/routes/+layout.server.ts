@@ -6,6 +6,5 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
   if (resp == null) {
     return {};
   }
-  console.log(resp.user);
   return { user: structuredClone(resp.user) };
 };

@@ -43,7 +43,6 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
 export const isSessionValid = async (cookies: Cookies): Promise<boolean> => {
   const sessionID = cookies.get(sessionCookieName);
 
-  console.log(sessionID);
   if (!sessionID) return false;
 
   try {

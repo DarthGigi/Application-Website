@@ -9,7 +9,6 @@ import type { Application, FormResponses, FormAgreements } from '$lib/types/appl
 export const load: PageServerLoad = async ({ cookies }) => {
   const s = await isSessionValid(cookies);
   if (!s) {
-    console.log(s);
     throw redirect(302, '/login');
   }
   // Load all applications
@@ -17,9 +16,8 @@ export const load: PageServerLoad = async ({ cookies }) => {
     if (connectionStatus.status != ConnectionStates.connected) {
       await connectToDB();
     }
-  } catch (e) {
-    console.log(e);
-  }
+  // eslint-disable-next-line no-empty
+  } catch (_) {}
 
   const apps: Application[] = [];
 
