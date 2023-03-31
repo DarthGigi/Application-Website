@@ -23,12 +23,8 @@ export const actions: Actions = {
       if (connectionStatus.status != ConnectionStates.connected) {
         await connectToDB();
       }
-    } catch (e) {
-      console.log(e);
-    }
-
-    const sDoc = await Secrets.findOneAndDelete({ Secret: data.secret });
-    //if(!sDoc) return fail(400, { message: 'invalid secret' });
+    // eslint-disable-next-line no-empty
+    } catch (_) {}
 
     data.username = data.username.toLowerCase();
 
@@ -43,7 +39,7 @@ export const actions: Actions = {
 
     await new Users({ _id: userID, password, username: data.username, admin: false }).save();
 
-    await newSession(cookies, userID)
+    await newSession(cookies, userID);
 
     throw redirect(301, '/dashboard');
   }

@@ -1,4 +1,4 @@
-<nav id="nav" class="sticky top-0 left-0 z-50 h-14 w-full saturate-[180%] backdrop-blur-[20px]">
+<nav id="nav" class="sticky left-0 top-0 z-50 h-14 w-full saturate-[180%] backdrop-blur-[20px]">
   <style>
     #nav {
       background-color: rgba(29, 29, 30, 0.7);

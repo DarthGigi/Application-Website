@@ -4,11 +4,12 @@ import { fail } from '@sveltejs/kit';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
 import { Applications } from '$lib/server/database/models/application';
-import  {ApplicationStatus, type FormResponses, type FormAgreements } from '$lib/types/application';
+import { ApplicationStatus, type FormResponses, type FormAgreements } from '$lib/types/application';
 import { v4 } from 'uuid';
 import { connectionStatus, connectToDB } from '$lib/server/database/index';
 import { hash } from '$lib/server/hash';
 import { ConnectionStates } from 'mongoose';
+import type { PageServerLoad } from './$types';
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -32,14 +33,14 @@ const formSchema = z.object({
   data: z.string().min(2)
 });
 
-export async function load(event) {
+export const load = (async (event) => {
   const form = await superValidate(event, formSchema);
   return {
     props: {
       form
     }
   };
-}
+}) satisfies PageServerLoad;
 
 // Cloudflare Turnstile
 interface TokenValidateResponse {
@@ -86,7 +87,6 @@ export const actions: Actions = {
 
     // Validate the token
     const { success, error } = await validateToken(token, SECRET_KEY);
-    console.log('Success: ', success, 'Error: ', error);
     if (!success) {
       return fail(400, {
         message: error || 'Invalid CAPTCHA'
@@ -96,61 +96,49 @@ export const actions: Actions = {
       if (connectionStatus.status != ConnectionStates.connected) {
         await connectToDB();
       }
-    } catch (e) {
-      console.log(e);
+      // eslint-disable-next-line no-empty
+    } catch (_) {}
+    const existingApplication: Document[] = await Applications.find({ $or: [{ email: form.data.email }, { discordID: form.data.discordID }, { IP: ip }] });
+
+    if (existingApplication.length !== 0) {
+      return fail(400, {
+        message: "You've already submitted an application!"
+      });
     }
-    try {
-      try {
-        const existingApplication: Document[] = await Applications.find({ $or: [{ email: form.data.email }, { discordID: form.data.discordID }, { IP: ip }] });
-        console.log('Existing application: ', existingApplication);
 
-        if (existingApplication.length !== 0) {
-          return fail(400, {
-            message: "You've already submitted an application!"
-          });
-        }
-      } catch (err) {
-        console.error(err);
-        return fail(500, { message: 'Something went horribly wrong' });
+    const data = form.data;
+
+    const questions: string[] = [];
+    for (const key in data) {
+      if (key.startsWith('question')) {
+        // hack to make ts' compiler approve of it
+        questions.push(data[key as keyof typeof data]);
       }
-
-      const data = form.data;
-
-      const questions: string[] = [];
-      for (const key in data) {
-        if (key.startsWith('question')) {
-          // hack to make ts' compiler approve of it
-          questions.push(data[key as keyof typeof data]);
-        }
-      }
-
-      const responses: FormResponses = {
-        Discovery: form.data.siriusDiscovery,
-        Usage: form.data.siriusUsage,
-        Questions: questions
-      };
-
-      const agreements: FormAgreements = {
-        Staff: form.data.contactStaff == 'on',
-        Info: form.data.contactInfo == 'on'
-      };
-
-      // create and save new app
-      await new Applications({
-        _id: v4(),
-        name: form.data.name,
-        email: form.data.email,
-        discordID: form.data.discordID,
-        responses: JSON.stringify(responses),
-        agreements: JSON.stringify(agreements),
-        IP: ip,
-        createdAt: new Date(),
-        status: ApplicationStatus.PENDING
-      }).save();
-    } catch (err) {
-      console.error(err);
-      return fail(500, { message: 'Something went wrong', form });
     }
+
+    const responses: FormResponses = {
+      Discovery: form.data.siriusDiscovery,
+      Usage: form.data.siriusUsage,
+      Questions: questions
+    };
+
+    const agreements: FormAgreements = {
+      Staff: form.data.contactStaff == 'on',
+      Info: form.data.contactInfo == 'on'
+    };
+
+    // create and save new app
+    await new Applications({
+      _id: v4(),
+      name: form.data.name,
+      email: form.data.email,
+      discordID: form.data.discordID,
+      responses: JSON.stringify(responses),
+      agreements: JSON.stringify(agreements),
+      IP: ip,
+      createdAt: new Date(),
+      status: ApplicationStatus.PENDING
+    }).save();
 
     return { form };
   }

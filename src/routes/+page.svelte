@@ -49,7 +49,6 @@
       submitButtonText = 'Submitting...';
     },
     onResult: ({ result, formEl, cancel }) => {
-      console.log(result);
       if (result.type === 'success') {
         submitButtonText = 'Submitted!';
         submitButtonDisabled = true;

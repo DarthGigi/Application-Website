@@ -62,7 +62,7 @@
           <Transition show={isOpen} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
             <div class="absolute right-0 z-10 mx-1 my-1 mt-2 flex w-48 origin-top-right justify-center rounded-md border-2 border-neutral-700 border-opacity-40 bg-[#050505] py-1 shadow-lg ring-1 ring-white ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
               <form action="/logout" method="POST" class="flex basis-full">
-                <button type="submit" class="mx-1 block w-full rounded py-2 px-3 text-left text-sm text-neutral-200 transition-colors duration-500 hover:bg-neutral-900" tabindex="-1" id="user-menu-item-2">Sign out</button>
+                <button type="submit" class="mx-1 block w-full rounded px-3 py-2 text-left text-sm text-neutral-200 transition-colors duration-500 hover:bg-neutral-900" tabindex="-1" id="user-menu-item-2">Sign out</button>
               </form>
             </div>
           </Transition>
@@ -74,7 +74,7 @@
   <!-- Mobile menu, show/hide based on menu state. -->
   <nav class="lg:hidden" aria-label="Global" id="mobile-menu">
     <Transition show={isOpen} enter="duration-150 ease-out" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="duration-100 ease-in" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95">
-      <div class="border-t border-neutral-700 pt-4 pb-3">
+      <div class="border-t border-neutral-700 pb-3 pt-4">
         <div class="flex items-center px-4">
           <div class="flex-shrink-0">
             <img class="h-10 w-10 rounded-full" src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg" alt="User" />
@@ -86,7 +86,7 @@
 
         <div class="mt-3 space-y-1 px-2">
           <form action="/logout" method="POST">
-            <button class="block rounded-md py-2 px-3 text-base font-medium text-neutral-400 hover:bg-neutral-700 hover:text-white">Sign out</button>
+            <button class="block rounded-md px-3 py-2 text-base font-medium text-neutral-400 hover:bg-neutral-700 hover:text-white">Sign out</button>
           </form>
         </div>
       </div>

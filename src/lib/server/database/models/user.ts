@@ -1,18 +1,11 @@
+import type { User } from '$lib/server/types/database';
 import mongoose, { Schema } from 'mongoose';
-
-export interface User {
-  _id: string;
-  username: string;
-  password: string;
-  admin: boolean;
-}
 
 const schema = new Schema<User>(
   {
     _id: { type: String, required: true },
-    username: { type: String, required: true },
-    password: { type: String, required: true },
-    admin: { type: Boolean, required: true }
+    discord: { type: Object, required: true },
+    reviewer: { type: Boolean, required: true }
   },
   { versionKey: false }
 );

@@ -20,9 +20,8 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
     if (connectionStatus.status != ConnectionStates.connected) {
       await connectToDB();
     }
-  } catch (e) {
-    console.log(e);
-  }
+    // eslint-disable-next-line no-empty
+  } catch (_) {}
 
   const sess: Session | null = await Sessions.findById(Buffer.from(sessionID, 'hex').toString());
 
@@ -43,16 +42,14 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
 export const isSessionValid = async (cookies: Cookies): Promise<boolean> => {
   const sessionID = cookies.get(sessionCookieName);
 
-  if (!sessionID) 
-    return false;
+  if (!sessionID) return false;
 
   try {
     if (connectionStatus.status != ConnectionStates.connected) {
       await connectToDB();
     }
-  } catch (e) {
-    console.log(e);
-  }
+    // eslint-disable-next-line no-empty
+  } catch (_) {}
 
   const sess: Session | null = await Sessions.findById(Buffer.from(sessionID, 'hex').toString());
 
@@ -87,10 +84,10 @@ export const newSession = async (cookies: Cookies, UserID: string): Promise<void
 
 export const deleteSession = async (cookies: Cookies): Promise<void> => {
   const sess = cookies.get(sessionCookieName);
-  if(!sess) return;
-  await Sessions.findByIdAndDelete(Buffer.from(sess,"hex").toString())
+  if (!sess) return;
+  await Sessions.findByIdAndDelete(Buffer.from(sess, 'hex').toString());
   cookies.delete(sessionCookieName);
-}
+};
 
 export const getUserFromSession = async (cookies: Cookies): Promise<User> => {
   const sessionID = cookies.get(sessionCookieName);
@@ -101,9 +98,8 @@ export const getUserFromSession = async (cookies: Cookies): Promise<User> => {
     if (connectionStatus.status != ConnectionStates.connected) {
       await connectToDB();
     }
-  } catch (e) {
-    console.log(e);
-  }
+    // eslint-disable-next-line no-empty
+  } catch (_) {}
 
   const sess: Session | null = await Sessions.findById(Buffer.from(sessionID, 'hex').toString());
 
