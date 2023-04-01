@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
     throw redirect(302, '/login');
   }
 
-  if (!s.user.reviewer) throw redirect(302, '/unauthorized');
+  if (!s.user.reviewer) throw redirect(302, '/');
 
   // Load all applications
   try {

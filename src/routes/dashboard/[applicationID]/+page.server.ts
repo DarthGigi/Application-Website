@@ -25,7 +25,7 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 
   if (!application) throw redirect(302, '/dashboard');
 
-  const applications = (await Applications.find({})).map(app => (app.toObject({getters: false}) as Application));
+  const applications = (await Applications.find({})).map((app) => app.toObject({ getters: false }) as Application);
 
   return {
     parsedStatus: ParseStatusApplication(application.status),
@@ -91,7 +91,7 @@ export const actions: Actions = {
     await Applications.findByIdAndUpdate(application._id, application);
 
     // Send messages
-    await sendDenyLog(application.discord);
+    await sendDenyLog(application.discord, application);
 
     throw redirect(302, '/dashboard/' + params.applicationID);
   },

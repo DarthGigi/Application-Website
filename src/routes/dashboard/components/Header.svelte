@@ -10,9 +10,9 @@
 
 <header
   on:mouseleave={() => {
-    // open = false;
-    // isOpen = false;
-    // isOpenMenu = false;
+    open = false;
+    isOpen = false;
+    isOpenMenu = false;
   }}
   class="sticky top-0 z-10 border-b-2 border-b-neutral-700 border-opacity-40 bg-[#050505]"
 >
@@ -55,7 +55,16 @@
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div on:click={() => (isOpen = !isOpen)} class="relative flex-shrink-0 cursor-pointer pl-4">
           <div>
-            <button on:click={() => (isOpen = !isOpen)} type="button" class="flex rounded-full bg-neutral-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-transparent focus:ring-offset-2 focus:ring-offset-neutral-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+            <button
+              on:click={(e) => {
+                e.preventDefault();
+              }}
+              type="button"
+              class="flex rounded-full bg-neutral-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-transparent focus:ring-offset-2 focus:ring-offset-neutral-800"
+              id="user-menu-button"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
               <span class="sr-only">Open user menu</span>
               <img class="pointer-events-none h-8 w-8 rounded-full" src={$page.data.user.discord.User.avatar} alt="User" />
             </button>

@@ -20,7 +20,6 @@ export enum ApplicationStatus {
 export interface Application {
   _id: string;
   name: string;
-  email: string;
   discord: DiscordUser;
   responses: FormResponses;
   agreements: FormAgreements;

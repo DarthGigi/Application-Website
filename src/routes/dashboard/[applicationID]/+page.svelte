@@ -20,7 +20,7 @@
     <div class="border-t border-neutral-800 px-4 py-5 sm:p-0">
       <dl class="sm:divide-y sm:divide-neutral-800">
         <Answers title="Name" value={data.application.name} />
-        <Answers title="Discord ID" value={data.application.discord.User.username} />
+        <Answers title="Discord ID" value={data.application.discord.User.id} />
         <Answers title="How long have you been a Sirius member for?" value={data.application.responses.Usage} />
         <Answers title="How did you find out about Sirius?" value={data.application.responses.Discovery} />
         <Answers title="A user opens a ticket stating they have purchased Sirius Pro with stripe 30 minutes ago but our logs show nothing about it. What would you do?" value={data.application.responses.Questions[0]} />

@@ -7,7 +7,6 @@ const schema = new Schema<Application>(
   {
     _id: { type: String, required: true },
     name: { type: String, required: true },
-    email: { type: String, required: true },
     discord: { type: Object, required: false, default: {} as DiscordUser },
     responses: { type: Object, required: true },
     agreements: { type: Object, required: true },

@@ -25,8 +25,6 @@
     multipleSubmits: 'prevent',
     validators: {
       name: (value) => (value.length >= 2 ? 'Name must be at least 2 characters long' : null),
-      email: (value) => (value.length >= 5 ? 'Email must be at least 5 characters long' : null),
-      discordID: (value) => (value.length >= 17 ? 'Discord ID must be at least 17 characters long' : null),
       siriusUsage: (value) => (value.length >= 1 ? 'Sirius Usage must be at least 1 characters long' : null),
       siriusDiscovery: (value) => (value.length >= 1 ? 'Sirius Discovery must be at least 1 characters long' : null),
       question1: (value) => (value.length >= 1 ? 'Question 1 must be at least 1 characters long' : null),
@@ -82,11 +80,26 @@
 
 <Navbar />
 
+<div class="px-4 pt-8 sm:px-8 md:px-16 lg:px-32 xl:px-48 2xl:px-72">
+  <h3 class="text-lg font-medium leading-6 text-neutral-200">Applying as</h3>
+  <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+    <div class="group w-full rounded-lg border-2 border-neutral-700 border-opacity-40 bg-[#050505] bg-cover bg-center bg-no-repeat px-4 py-5 shadow sm:p-6" style="background-image: url('{data.user.discord.User.banner}?size=1024'); background-color: {data.user.discord.User.accent_color ? '#' + data.user.discord.User.accent_color : '#050505'};">
+      <dt class="hidden truncate text-sm font-medium text-neutral-400">Profile</dt>
+      <dd class="mt-1 text-3xl font-semibold tracking-tight text-neutral-300">
+        <img src="{data.user.discord.User.avatar}?size=1024" class="inline-block h-10 w-10 rounded-full" alt="User Avatar" />
+        <br />
+        {data.user.discord.User.username + '#' + data.user.discord.User.discriminator}
+        <br />
+        <span class="text-sm font-normal text-neutral-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100">Not you? <a href="/logout" class="underline">Logout</a></span>
+      </dd>
+    </div>
+  </dl>
+</div>
+
 <form method="post" id="form" use:enhance>
   <div id="#FormQuestions" class="flex flex-col flex-wrap space-y-6 px-4 py-8 sm:px-8 md:px-16 lg:px-32 xl:px-48 2xl:px-72">
     <FormQuestionContainer title="Personal Information" description="A few questions about you">
-      <Input label="Name" placeholder="Craig" name="name" size="short" type="text" contraints={$constraints.name} />
-      <Input label="Email" placeholder="craig@sirius.menu" name="email" size="short" type="email" contraints={$constraints.email} />
+      <Input label="Name" placeholder="Craig" name="name" type="text" contraints={$constraints.name} />
       <Input label="How long have you been a Sirius member for?" placeholder="3 Days" name="siriusUsage" type="text" contraints={$constraints.siriusUsage} />
       <Input label="How did you find out about Sirius?" placeholder="A friend" name="siriusDiscovery" type="text" contraints={$constraints.siriusDiscovery} />
     </FormQuestionContainer>
@@ -147,8 +160,8 @@
     <div class="flex justify-end">
       <SubmitButton text={submitButtonText} disabled={submitButtonDisabled} />
     </div>
-    <div class="flex justify-end">
+    <!-- <div class="flex justify-end">
       <Turnstile siteKey="0x4AAAAAAADhlmHfgKPFW6Ec" theme="dark" />
-    </div>
+    </div> -->
   </div>
 </form>

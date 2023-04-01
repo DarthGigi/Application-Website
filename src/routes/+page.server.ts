@@ -14,8 +14,6 @@ import { validateSession } from '$lib/server/auth';
 
 const formSchema = z.object({
   name: z.string().min(1),
-  email: z.string().email(),
-  discordID: z.string().min(17),
   siriusUsage: z.string().min(1),
   siriusDiscovery: z.string().min(1),
   question1: z.string().min(1),
