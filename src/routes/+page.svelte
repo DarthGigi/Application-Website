@@ -50,8 +50,6 @@
     },
     onResult: ({ result, formEl, cancel }) => {
       if (result.type === 'success') {
-        // @ts-ignore
-        open(result.data.redirectUrl, "authorizeDiscord", "width=400,height=600");
         submitButtonText = 'Submitted!';
         submitButtonDisabled = true;
         setTimeout(() => {
@@ -89,7 +87,6 @@
     <FormQuestionContainer title="Personal Information" description="A few questions about you">
       <Input label="Name" placeholder="Craig" name="name" size="short" type="text" contraints={$constraints.name} />
       <Input label="Email" placeholder="craig@sirius.menu" name="email" size="short" type="email" contraints={$constraints.email} />
-      <Input label="Discord ID" placeholder="123456789987654321" name="discordID" type="text" contraints={$constraints.discordID} />
       <Input label="How long have you been a Sirius member for?" placeholder="3 Days" name="siriusUsage" type="text" contraints={$constraints.siriusUsage} />
       <Input label="How did you find out about Sirius?" placeholder="A friend" name="siriusDiscovery" type="text" contraints={$constraints.siriusDiscovery} />
     </FormQuestionContainer>

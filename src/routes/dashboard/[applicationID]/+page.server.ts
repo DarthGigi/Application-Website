@@ -5,7 +5,8 @@ import { validateSession } from '$lib/server/auth';
 import { connectionStatus, connectToDB } from '$lib/server/database';
 import { ConnectionStates, Document } from 'mongoose';
 import { ApplicationStatus, type Application } from '$lib/types/application';
-import { addUserAcceptedRole, sendAcceptLog, sendDenyLog, getUserData } from '$lib/server/bot';
+import { addUserAcceptedRole, sendAcceptLog, sendDenyLog } from '$lib/server/bot';
+import { ParseStatusApplication } from '$lib/Applications';
 
 export const load: PageServerLoad = async ({ params, cookies }) => {
   const session = await validateSession(cookies);
@@ -20,17 +21,15 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
     // eslint-disable-next-line no-empty
   } catch (_) {}
 
-  const application = (await Applications.findById(params.applicationID).exec()).toObject({ getters: false });
+  const application: Application = await Applications.findById(params.applicationID).exec();
 
-  if (!application || application.data) throw redirect(302, '/dashboard');
+  if (!application) throw redirect(302, '/dashboard');
 
-  const applicantData = (await getUserData(application.discordID)).body;
-  console.log(await applicantData);
-
-  const applications = (await Applications.find({})).filter((a) => a._id != application._id);
+  const applications = (await Applications.find({})).map(app => (app.toObject({getters: false}) as Application));
 
   return {
-    application: structuredClone(application),
+    parsedStatus: ParseStatusApplication(application.status),
+    application: JSON.parse(JSON.stringify(application)) as Application,
     streamed: {
       applications
     }
@@ -55,13 +54,14 @@ export const actions: Actions = {
     }
 
     application.status = ApplicationStatus.ACCEPTED;
-    application.Reviewers.push(reviewer.discord.User.id);
+    if (!application.Reviewers) application.Reviewers = [];
+    application.Reviewers?.push(reviewer.discord.User.id);
 
     await Applications.findByIdAndUpdate(application._id, application);
 
     // add roles
-    await addUserAcceptedRole(application.discord.User.id, '939871641209540658');
-    await addUserAcceptedRole(application.discord.User.id, '1089307016108970035');
+    await addUserAcceptedRole(application.discord.User.id, '939871641209540658', `Application approved by ${reviewer.discord.User.username}`);
+    await addUserAcceptedRole(application.discord.User.id, '1089307016108970035', `Application approved by ${reviewer.discord.User.username}`);
 
     await sendAcceptLog(application.discord, application);
 
@@ -85,6 +85,7 @@ export const actions: Actions = {
     }
 
     application.status = ApplicationStatus.DENIED;
+    if (!application.Reviewers) application.Reviewers = [];
     application.Reviewers.push(reviewer.discord.User.id);
 
     await Applications.findByIdAndUpdate(application._id, application);

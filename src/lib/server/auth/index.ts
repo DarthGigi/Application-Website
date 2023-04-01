@@ -37,7 +37,7 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
     return;
   }
 
-  return { session: sess, user: (user.toObject({getters: false}) as User) };
+  return { session: sess, user: user.toObject({ getters: false }) as User };
 };
 
 export const isSessionValid = async (cookies: Cookies): Promise<boolean> => {
@@ -79,7 +79,7 @@ export const newSession = async (cookies: Cookies, UserID: string): Promise<void
     UserID
   }).save();
 
-  cookies.set(sessionCookieName, Buffer.from(sessionID).toString('hex'), {path: '/', sameSite: 'lax'});
+  cookies.set(sessionCookieName, Buffer.from(sessionID).toString('hex'), { path: '/', sameSite: 'lax' });
   return;
 };
 

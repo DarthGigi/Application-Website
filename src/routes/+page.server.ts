@@ -1,5 +1,4 @@
 import type { Actions } from './$types';
-import { CF_TURNSTILE_SECRET_KEY } from '$env/static/private';
 import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
@@ -11,7 +10,7 @@ import { hash } from '$lib/server/hash';
 import { ConnectionStates } from 'mongoose';
 import type { PageServerLoad } from './$types';
 import type { Application } from '$lib/types/application';
-import { GetAuthorizationURL } from '$lib/server/oauth';
+import { validateSession } from '$lib/server/auth';
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -36,6 +35,8 @@ const formSchema = z.object({
 });
 
 export const load = (async (event) => {
+  const sess = await validateSession(event.cookies);
+  if (!sess) throw redirect(302, '/login');
   const form = await superValidate(event, formSchema);
   return {
     props: {
@@ -44,6 +45,7 @@ export const load = (async (event) => {
   };
 }) satisfies PageServerLoad;
 
+/*
 // Cloudflare Turnstile
 interface TokenValidateResponse {
   'error-codes': string[];
@@ -73,19 +75,24 @@ async function validateToken(token: FormDataEntryValue | string | null, secret: 
     // Return the first error if it exists
     error: data['error-codes']?.length ? data['error-codes'][0] : null
   };
-}
+}*/
 
 export const actions: Actions = {
   default: async (event) => {
+    const session = await validateSession(event.cookies);
+
+    // this is a rare case
+    if (!session) throw redirect(302, '/login');
+
     // Validate the form itself
     const form = await superValidate(await event.request.clone().formData(), formSchema);
 
     const ip = hash(event.getClientAddress());
 
-    if (!form.valid) return fail(400, { form });
+    //if (!form.valid) return fail(400, { form });
 
-    const token = (await event.request.formData()).get('cf-turnstile-response');
-    const SECRET_KEY = CF_TURNSTILE_SECRET_KEY;
+    //const token = (await event.request.formData()).get('cf-turnstile-response');
+    //const SECRET_KEY = CF_TURNSTILE_SECRET_KEY;
 
     // Validate the token
     // const { success, error } = await validateToken(token, SECRET_KEY);
@@ -129,24 +136,23 @@ export const actions: Actions = {
       Info: form.data.contactInfo == 'on'
     };
 
-
     // create and save new app
     const app: Application = {
       _id: v4(),
       name: form.data.name,
       email: form.data.email,
-      responses: JSON.stringify(responses),
-      agreements: JSON.stringify(agreements),
+      responses,
+      agreements,
       IP: ip,
       createdAt: new Date(),
-      status: ApplicationStatus.PENDING
-    }
+      status: ApplicationStatus.PENDING,
+      discord: session.user.discord
+    };
 
-    await new Applications(app).save()
+    await new Applications(app).save();
 
     return {
-      redirectUrl: GetAuthorizationURL(app._id, "consent"),
       form
-    }
+    };
   }
 };

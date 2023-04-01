@@ -10,14 +10,14 @@
     <button type="button" on:click={() => (isOpen = !isOpen)} class="relative w-full cursor-pointer rounded-md border-2 border-neutral-700 border-opacity-40 bg-[#050505] py-2 pl-3 pr-10 text-left shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 sm:text-sm" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label">
       <span class="flex items-center text-neutral-200">
         {#if $page.params.applicationID}
-          {#if $page.data.application.status === 'PENDING'}
+          {#if $page.data.application.status === 0}
             <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-orange-500" aria-hidden="true" />
-          {:else if $page.data.application.status === 'APPROVED'}
-            <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-500" aria-hidden="true" />
-          {:else if $page.data.application.status === 'DENIED'}
+          {:else if $page.data.application.status === 1}
             <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-red-500" aria-hidden="true" />
+          {:else if $page.data.application.status === 2}
+            <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-500" aria-hidden="true" />
           {/if}
-          <span class="ml-3 block truncate">{$page.data.application.name}</span>
+          <span class="ml-3 block truncate">{$page.data.application.discord.User.username}#{$page.data.application.discord.User.discriminator}</span>
         {:else}
           <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-transparent" />
           <span class="ml-3 block truncate">Select Application</span>
@@ -47,19 +47,19 @@
             <li>
               <a href="/dashboard/{application._id}" class=" relative mx-1 my-1 list-item cursor-pointer select-none rounded py-2 pl-3 pr-9 text-neutral-200 transition-colors duration-500 hover:bg-neutral-900 hover:text-white" id="listbox-option-{application.id}" role="option">
                 <div class="flex items-center">
-                  {#if application.status === 'PENDING'}
+                  {#if application.status === 0}
                     <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-orange-500" aria-hidden="true" />
-                  {:else if application.status === 'APPROVED'}
-                    <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-500" aria-hidden="true" />
-                  {:else if application.status === 'DENIED'}
+                  {:else if application.status === 1}
                     <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-red-500" aria-hidden="true" />
+                  {:else if application.status === 2}
+                    <span class="inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-500" aria-hidden="true" />
                   {/if}
                   <span class="ml-3 block truncate font-normal">
-                    {application.name}
+                    {application.discord.User.username}#{application.discord.User.discriminator}
                   </span>
                 </div>
 
-                {#if $page.data.application !== undefined && application.id === $page.data.application.id}
+                {#if $page.data.application && application._id === $page.data.application._id}
                   <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-white">
                     <!-- Heroicon name: mini/check -->
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

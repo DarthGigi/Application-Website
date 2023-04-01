@@ -1,7 +1,7 @@
 import { DiscordAPIBase } from '../oauth/discord';
-import { BOT_TOKEN } from '$env/static/private';
+import { DISCORD_BOT_TOKEN } from '$env/static/private';
 import { PUBLIC_SIRIUS_APPLICATION_ACCEPTED_LOG_ID, PUBLIC_SIRIUS_GUILD_ID } from '$env/static/public';
-import type { DiscordUser, User } from '../types/database';
+import type { DiscordUser } from '../types/database';
 import type { APIDMChannel } from 'discord-api-types/v10';
 import type { Application } from '$lib/types/application';
 
@@ -12,7 +12,7 @@ function makeDiscordAPIRequest(endpoint: string, method: 'GET' | 'POST' | 'PUT' 
   const options = {
     method: method,
     headers: {
-      Authorization: 'Bot ' + BOT_TOKEN,
+      Authorization: 'Bot ' + DISCORD_BOT_TOKEN,
       ...headers
     }
   };

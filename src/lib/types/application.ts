@@ -1,4 +1,4 @@
-import type { DiscordUser } from "$lib/server/types/database";
+import type { DiscordUser } from '$lib/server/types/database';
 
 export interface FormResponses {
   Usage: string;
@@ -21,12 +21,12 @@ export interface Application {
   _id: string;
   name: string;
   email: string;
-  discord?: DiscordUser;
-  responses: FormResponses | string;
-  agreements: FormAgreements | string;
+  discord: DiscordUser;
+  responses: FormResponses;
+  agreements: FormAgreements;
   IP: string;
   status: ApplicationStatus;
   createdAt: Date;
   updatedAt?: Date;
-  Reviewers?: string[]
+  Reviewers?: string[];
 }
