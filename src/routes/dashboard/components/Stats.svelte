@@ -1,11 +1,13 @@
 <script lang="ts">
   import { page } from '$app/stores';
+
+  // console.log($page.data);
 </script>
 
 <div>
   <h3 class="text-lg font-medium leading-6 text-neutral-200">Application Stats</h3>
   <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-1">
-    {#await $page.data.streamed.userData}
+    {#await $page}
       <div class="animate-pulse overflow-hidden rounded-lg border-2 border-neutral-700 border-opacity-40 bg-[#050505] px-4 py-5 shadow sm:p-6">
         <dt class="truncate text-sm font-medium text-neutral-400">Profile</dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-neutral-300">
