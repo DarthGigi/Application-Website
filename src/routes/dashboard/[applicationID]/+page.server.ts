@@ -91,7 +91,7 @@ export const actions: Actions = {
     await Applications.findByIdAndUpdate(application._id, application);
 
     // Send messages
-    await sendDenyLog(application.discord, application);
+    await sendDenyLog(application.discord);
 
     throw redirect(302, '/dashboard/' + params.applicationID);
   },
