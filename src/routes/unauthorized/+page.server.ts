@@ -1,6 +1,6 @@
 import type { PageServerLoad } from '../$types';
 import { validateSession } from '$lib/server/auth/';
-import { error, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 
 export const load = (async ({ cookies }) => {
   const s = await validateSession(cookies);

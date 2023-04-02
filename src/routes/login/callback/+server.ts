@@ -1,5 +1,5 @@
 import { hash } from '$lib/server/hash';
-import { error, redirect, text } from '@sveltejs/kit';
+import { redirect, text } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import type { OAuthResponse } from '$lib/types/discord';
 import { ExchangeAccessToken } from '$lib/server/oauth';
