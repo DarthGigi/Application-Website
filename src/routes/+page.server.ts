@@ -85,8 +85,6 @@ export const actions: Actions = {
     // Validate the form itself
     const form = await superValidate(await event.request.clone().formData(), formSchema);
 
-    const ip = hash(event.getClientAddress());
-
     //if (!form.valid) return fail(400, { form });
 
     //const token = (await event.request.formData()).get('cf-turnstile-response');
@@ -105,7 +103,7 @@ export const actions: Actions = {
       }
       // eslint-disable-next-line no-empty
     } catch (_) {}
-    const existingApplication: Document[] = await Applications.find({ $or: [{ email: form.data.email }, { discordID: form.data.discordID }, { IP: ip }] });
+    const existingApplication: Document[] = await Applications.find({ $or: [{ discordID: session.user.discord.User.id }] });
 
     if (existingApplication.length !== 0) {
       return fail(400, {
@@ -138,10 +136,8 @@ export const actions: Actions = {
     const app: Application = {
       _id: v4(),
       name: form.data.name,
-      email: form.data.email,
       responses,
       agreements,
-      IP: ip,
       createdAt: new Date(),
       status: ApplicationStatus.PENDING,
       discord: session.user.discord

@@ -23,7 +23,6 @@ export interface Application {
   discord: DiscordUser;
   responses: FormResponses;
   agreements: FormAgreements;
-  IP: string;
   status: ApplicationStatus;
   createdAt: Date;
   updatedAt?: Date;
