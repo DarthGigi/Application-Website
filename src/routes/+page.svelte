@@ -86,9 +86,9 @@
     <div class="group w-full rounded-lg border-2 border-neutral-700 border-opacity-40 bg-[#050505] bg-cover bg-center bg-no-repeat px-4 py-5 shadow sm:p-6" style="background-image: url('{data.user.discord.User.banner}?size=1024'); background-color: {data.user.discord.User.accent_color ? '#' + data.user.discord.User.accent_color : '#050505'};">
       <dt class="hidden truncate text-sm font-medium text-neutral-400">Profile</dt>
       <dd class="mt-1 text-3xl font-semibold tracking-tight text-neutral-300">
-        <img src="{data.user.discord.User.avatar}?size=1024" class="inline-block h-10 w-10 rounded-full" alt="User Avatar" />
+        <img src="{data.user?.discord.User.avatar}?size=1024" class="inline-block h-10 w-10 rounded-full" alt="User Avatar" />
         <br />
-        {data.user.discord.User.username + '#' + data.user.discord.User.discriminator}
+        {data.user?.discord.User.username + '#' + data.user?.discord.User.discriminator}
         <br />
         <span class="text-sm font-normal text-neutral-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100">Not you? <a href="/logout" class="underline">Logout</a></span>
       </dd>
