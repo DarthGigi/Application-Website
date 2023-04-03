@@ -25,6 +25,7 @@ export const connectToDB = async () => {
     await mongoose.disconnect();
   }
   connectionStatus.status = mongoose.ConnectionStates.connecting;
+  console.log(MONGO_URI)
   const con = await mongoose.connect(MONGO_URI, { keepAlive: true, keepAliveInitialDelay: 300000 });
   connectionStatus.status = mongoose.ConnectionStates.connected;
   // successfully connected!
