@@ -6,8 +6,7 @@ import Applications from '$lib/server/database/models/application';
 import { ApplicationStatus, type FormResponses, type FormAgreements } from '$lib/types/application';
 import { v4 } from 'uuid';
 import { connectionStatus, connectToDB } from '$lib/server/database/index';
-import { hash } from '$lib/server/hash';
-import { ConnectionStates } from 'mongoose';
+import mongoose from 'mongoose';
 import type { PageServerLoad } from './$types';
 import type { Application } from '$lib/types/application';
 import { validateSession } from '$lib/server/auth';
@@ -98,7 +97,7 @@ export const actions: Actions = {
     //   });
     // }
     try {
-      if (connectionStatus.status != ConnectionStates.connected) {
+      if (connectionStatus.status != mongoose.ConnectionStates.connected) {
         await connectToDB();
       }
       // eslint-disable-next-line no-empty

@@ -3,7 +3,7 @@ import type { PageServerLoad } from '../$types';
 import Applications from '$lib/server/database/models/application';
 import { validateSession } from '$lib/server/auth/';
 import { connectionStatus, connectToDB } from '$lib/server/database';
-import { ConnectionStates } from 'mongoose';
+import mongoose from 'mongoose';
 import type { Application } from '$lib/types/application';
 
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   // Load all applications
   try {
-    if (connectionStatus.status != ConnectionStates.connected) {
+    if (connectionStatus.status != mongoose.ConnectionStates.connected) {
       await connectToDB();
     }
     // eslint-disable-next-line no-empty

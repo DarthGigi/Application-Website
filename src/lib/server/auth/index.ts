@@ -5,7 +5,7 @@ import Users from '$lib/server/database/models/user';
 import type { User, Session } from '$lib/server/types/database';
 import { v4 } from 'uuid';
 import { hash } from '$lib/server/hash';
-import { ConnectionStates } from 'mongoose';
+import mongoose from 'mongoose';
 
 // one week
 const MaxSession = 60480000;
@@ -18,7 +18,7 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
   if (!sessionID) return;
 
   try {
-    if (connectionStatus.status != ConnectionStates.connected) {
+    if (connectionStatus.status != mongoose.ConnectionStates.connected) {
       await connectToDB();
     }
     // eslint-disable-next-line no-empty
@@ -46,7 +46,7 @@ export const isSessionValid = async (cookies: Cookies): Promise<boolean> => {
   if (!sessionID) return false;
 
   try {
-    if (connectionStatus.status != ConnectionStates.connected) {
+    if (connectionStatus.status != mongoose.ConnectionStates.connected) {
       await connectToDB();
     }
     // eslint-disable-next-line no-empty
@@ -96,7 +96,7 @@ export const getUserFromSession = async (cookies: Cookies): Promise<User> => {
   if (!sessionID) return {} as User;
 
   try {
-    if (connectionStatus.status != ConnectionStates.connected) {
+    if (connectionStatus.status != mongoose.ConnectionStates.connected) {
       await connectToDB();
     }
     // eslint-disable-next-line no-empty

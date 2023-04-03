@@ -3,7 +3,7 @@ import { error, redirect } from '@sveltejs/kit';
 import Applications from '$lib/server/database/models/application';
 import { validateSession } from '$lib/server/auth';
 import { connectionStatus, connectToDB } from '$lib/server/database';
-import { ConnectionStates, Document } from 'mongoose';
+import mongoose from 'mongoose';
 import { ApplicationStatus, type Application } from '$lib/types/application';
 import { addUserAcceptedRole, sendAcceptLog, sendDenyLog } from '$lib/server/bot';
 import { ParseStatusApplication } from '$lib/Applications';
@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
   }
 
   try {
-    if (connectionStatus.status != ConnectionStates.connected) {
+    if (connectionStatus.status != mongoose.ConnectionStates.connected) {
       await connectToDB();
     }
     // eslint-disable-next-line no-empty
@@ -39,7 +39,7 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 export const actions: Actions = {
   acceptApplication: async ({ params, cookies }) => {
     try {
-      if (connectionStatus.status != ConnectionStates.connected) {
+      if (connectionStatus.status != mongoose.ConnectionStates.connected) {
         await connectToDB();
       }
       // eslint-disable-next-line no-empty
@@ -48,7 +48,7 @@ export const actions: Actions = {
     const ses = await validateSession(cookies);
     if (!ses) throw redirect(302, '/login');
     const reviewer = ses.user;
-    const application = ((await Applications.findById(params.applicationID)) as Document<string, null, Application> | null)?.toObject({ getters: false }) as Application;
+    const application = ((await Applications.findById(params.applicationID)) as mongoose.Document<string, null, Application> | null)?.toObject({ getters: false }) as Application;
     if (!application) {
       throw error(404, 'Application not found!');
     }
@@ -69,7 +69,7 @@ export const actions: Actions = {
   },
   rejectApplication: async ({ params, cookies }) => {
     try {
-      if (connectionStatus.status != ConnectionStates.connected) {
+      if (connectionStatus.status != mongoose.ConnectionStates.connected) {
         await connectToDB();
       }
       // eslint-disable-next-line no-empty
@@ -79,7 +79,7 @@ export const actions: Actions = {
     if (!ses) throw redirect(302, '/login');
 
     const reviewer = ses.user;
-    const application = ((await Applications.findById(params.applicationID)) as Document<string, null, Application> | null)?.toObject({ getters: false }) as Application;
+    const application = ((await Applications.findById(params.applicationID)) as mongoose.Document<string, null, Application> | null)?.toObject({ getters: false }) as Application;
     if (!application) {
       throw error(404, 'Application not found!');
     }

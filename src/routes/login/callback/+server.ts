@@ -5,7 +5,7 @@ import type { OAuthResponse } from '$lib/types/discord';
 import { ExchangeAccessToken } from '$lib/server/oauth';
 import { GenerateUserFromAccessToken } from '$lib/server/oauth/discord/';
 import { connectionStatus, connectToDB } from '$lib/server/database';
-import { ConnectionStates } from 'mongoose';
+import mongoose from "mongoose";
 import Users from '$lib/server/database/models/user';
 import { v4 } from 'uuid';
 import { newSession } from '$lib/server/auth';
@@ -24,7 +24,7 @@ export const GET = (async ({ url, getClientAddress, cookies }) => {
   const us = await GenerateUserFromAccessToken(resp);
 
   try {
-    if (connectionStatus.status != ConnectionStates.connected) {
+    if (connectionStatus.status != mongoose.ConnectionStates.connected) {
       await connectToDB();
     }
     // eslint-disable-next-line no-empty
