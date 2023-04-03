@@ -86,7 +86,8 @@ export const actions: Actions = {
 
     application.status = ApplicationStatus.DENIED;
     if (!application.Reviewers) application.Reviewers = [];
-    application.Reviewers.push(reviewer.discord.User.id);
+    
+    if(!application.Reviewers.includes(reviewer.discord.User.id)) application.Reviewers.push(reviewer.discord.User.id);
 
     await Applications.findByIdAndUpdate(application._id, application);
 
