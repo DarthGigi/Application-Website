@@ -1,7 +1,6 @@
 <script lang="ts">
   // Imports
   import { superForm } from 'sveltekit-superforms/client';
-  import { Turnstile } from 'svelte-turnstile';
   // local imports
   import type { PageData } from './$types';
   import FormQuestionContainer from '../components/FormComponents/FormQuestionContainer.svelte';
@@ -20,7 +19,7 @@
   // Exports
   export let data: PageData;
 
-  export const { form, enhance, constraints, errors } = superForm(data.props.form, {
+  export const { form, enhance, constraints, errors } = superForm(data.props?.form, {
     taintedMessage: 'Are you sure you want to leave?',
     multipleSubmits: 'prevent',
     validators: {
@@ -83,7 +82,7 @@
 <div class="px-4 pt-8 sm:px-8 md:px-16 lg:px-32 xl:px-48 2xl:px-72">
   <h3 class="text-lg font-medium leading-6 text-neutral-200">Applying as</h3>
   <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-    <div class="group w-full rounded-lg border-2 border-neutral-700 border-opacity-40 bg-[#050505] bg-cover bg-center bg-no-repeat px-4 py-5 shadow sm:p-6" style="background-image: url('{data.user.discord.User.banner}?size=1024'); background-color: {data.user.discord.User.accent_color ? '#' + data.user.discord.User.accent_color : '#050505'};">
+    <div class="group w-full rounded-lg border-2 border-neutral-700 border-opacity-40 bg-[#050505] bg-cover bg-center bg-no-repeat px-4 py-5 shadow sm:p-6" style="background-image: url('{data.user?.discord.User.banner}?size=1024'); background-color: {data.user?.discord.User.accent_color ? '#' + data.user?.discord.User.accent_color : '#050505'};">
       <dt class="hidden truncate text-sm font-medium text-neutral-400">Profile</dt>
       <dd class="mt-1 text-3xl font-semibold tracking-tight text-neutral-300">
         <img src="{data.user?.discord.User.avatar}?size=1024" class="inline-block h-10 w-10 rounded-full" alt="User Avatar" />

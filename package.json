@@ -46,7 +46,6 @@
     "flowbite": "^1.6.4",
     "flowbite-svelte": "^0.34.4",
     "mongoose": "^7.0.3",
-    "svelte-turnstile": "^0.3.1",
     "sveltekit-superforms": "^0.6.6",
     "uuid": "^9.0.0"
   }
