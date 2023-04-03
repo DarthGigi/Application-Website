@@ -103,7 +103,7 @@
       <Input label="How did you find out about Sirius?" placeholder="A friend" name="siriusDiscovery" type="text" contraints={$constraints.siriusDiscovery} />
     </FormQuestionContainer>
     <FormQuestionContainer title="General Questions" description="Questions about stuff you will encounter while being a support member">
-      <TextArea label="A user opens a ticket stating they have purchased Sirius Pro with stripe 30 minutes ago but our logs show nothing about it. What would you do?" name="question1" constraints={$constraints.question1} />
+      <TextArea label="When a user opens a ticket stating they have purchased Sirius Pro with stripe 30 minutes ago but our logs show nothing about it. What would you do?" name="question1" constraints={$constraints.question1} />
 
       <RadioContainer title="Which of the following statements is true?" name="question2">
         <Radio description="Support members must use grammar and proper behavior at all times" value="1" name="question2" id="question2-1" />
@@ -112,7 +112,7 @@
         <Radio description="None of the statements is correct." value="4" name="question2" id="question2-4" />
       </RadioContainer>
 
-      <RadioContainer title="A user sends NSFW content in #general, what do you do?" name="question3">
+      <RadioContainer title="If an user sends NSFW content in #general, what do you do?" name="question3">
         <Radio description="Delete the message." value="1" name="question3" id="question3-1" />
         <Radio description="Blacklist the user and ban him." value="2" name="question3" id="question3-2" />
         <Radio description="Report the message so someone with proper permissions can ban the user." value="3" name="question3" id="question3-3" />
@@ -122,15 +122,15 @@
       <RadioContainer title="You think you should be promoted but you're still a support member, what do you do?" name="question4">
         <Radio description="DM someone in the management team to notify them." value="1" name="question4" id="question4-1" />
         <Radio description="Do nothing." value="2" name="question4" id="question4-2" />
-        <Radio description="Talk about it in staff-chat" value="3" name="question4" id="question4-3" />
+        <Radio description="Talk about it in #staff-chat" value="3" name="question4" id="question4-3" />
         <Radio description="None of the statements is correct." value="4" name="question4" id="question4-4" />
       </RadioContainer>
 
-      <RadioContainer title="You see another staff member breaking the rules, what's your response?" name="question5">
+      <RadioContainer title="You spot another staff member breaking the rules, what's your response?" name="question5">
         <Radio description="Try to confront the staff member" value="1" name="question5" id="question5-1" />
         <Radio description="Ban him to stop the issue (or anything to stop it)" value="2" name="question5" id="question5-2" />
         <Radio description="Contact a higher up about this issue so they can resolve it" value="3" name="question5" id="question5-3" />
-        <Radio description="Talk about it in staff-chat" value="4" name="question5" id="question5-4" />
+        <Radio description="Talk about it in #staff-chat" value="4" name="question5" id="question5-4" />
       </RadioContainer>
 
       <TextArea label="What would you do if a user comes with a problem which you don't know how to handle?" name="question6" constraints={$constraints.question6} />
@@ -139,7 +139,7 @@
 
       <RadioContainer title="What would you do if a user doesn't speak english?" name="question8">
         <Radio description="Ignore them" value="1" name="question8" id="question8-1" />
-        <Radio description="Try to help them (ex with google translate)" value="2" name="question8" id="question8-2" />
+        <Radio description="Try to help them (ex. with google translate)" value="2" name="question8" id="question8-2" />
         <Radio description="If you know a staff member that speaks that languages, asked them to help them" value="3" name="question8" id="question8-3" />
         <Radio description="Deny support" value="4" name="question8" id="question8-4" />
       </RadioContainer>
@@ -152,15 +152,12 @@
 
     <CheckboxContainer>
       <Checkbox title="Contacting" description="I agree that I will not contact any staff member about when the application will be reviewed or the reason for its denial." name="contactStaff" />
-      <Checkbox title="Information" description="I agree that all the information I get about the final outcome will be stated in the email I receive, and I won't contact anyone about or talk about it on the server to get further information." name="contactInfo" />
-      <Checkbox title="Data" description="I acknowledge that after submitting this form, my IP address and all the information I provided above will be stored in a database. (We will not share this information with anyone. Not even staff members.)" name="data" />
+      <Checkbox title="Information" description="I agree that all the information I get about the final outcome will be stated in the DM I receive from the bot, and I won't contact anyone about or talk about it on the server to get further information." name="contactInfo" />
+      <Checkbox title="Data" description="I acknowledge that after submitting this form, my discord data and all the information I provided above will be stored in a database. (We will not share this information with anyone. Not even staff members.)" name="data" />
     </CheckboxContainer>
 
     <div class="flex justify-end">
       <SubmitButton text={submitButtonText} disabled={submitButtonDisabled} />
     </div>
-    <!-- <div class="flex justify-end">
-      <Turnstile siteKey="0x4AAAAAAADhlmHfgKPFW6Ec" theme="dark" />
-    </div> -->
   </div>
 </form>
