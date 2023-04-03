@@ -1,1 +1,1 @@
-npm install && npm run build && pm2 restart "JobsWebsite"
+npm install && npm run build && pm2 restart "Jobs"
