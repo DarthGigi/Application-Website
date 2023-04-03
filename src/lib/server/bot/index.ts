@@ -37,7 +37,8 @@ export async function sendAcceptLog(user: DiscordUser, application: Application)
 
 export async function sendDenyLog(user: DiscordUser) {
   const dm: APIDMChannel = await (await makeDiscordAPIRequest('users/@me/channels', 'POST', `{"recipient_id":"${user.User.id}"}`, { 'Content-Type': 'application/json' })).json();
-  await makeDiscordAPIRequest(`channels/${dm.id}/messages`, 'POST', `"embeds":[{"title":"<:Sirius:1056924373648429096> Application Denied","description":"Your application has been denied. Due to our privacy policy, we may not disclose the reason for the denial. You may reapply <t:${Math.floor(Date.now() / 1000) + 1209600}:R>","color":2829617}]`, { 'Content-Type': 'application/json' });
+  const r = await makeDiscordAPIRequest(`channels/${dm.id}/messages`, 'POST', `{"embeds":[{"title":"<:Sirius:1056924373648429096>  Application Denied","description":"Your application has been denied. Due to our privacy policy, we may not disclose the reason for the denial. You may reapply <t:${Math.floor(Date.now() / 1000) + 1209600}:R>","color":2829617}]}`, { 'Content-Type': 'application/json' });
+  console.log(await r.text());
   // shlex told me to remove :heart:
   //await makeDiscordAPIRequest(`channels/${PUBLIC_SIRIUS_APPLICATION_REJECTED_LOG_ID}/messages`, 'POST', `{"embeds":[{"fields":[],"title":"Application Denied!","description":"HAHAHAHAHAHAH <@${application.discord?.User.id}> has been denied! WHAT A LOSER LMAOOOOO <a:pepeLaugh:939964833879711775>","color":2829617}],"content":"<@${application.discord?.User.id}>"}`, { 'Content-Type': 'application/json' });
 }
