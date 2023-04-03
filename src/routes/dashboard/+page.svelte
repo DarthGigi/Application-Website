@@ -61,7 +61,7 @@
           {/each}
         </ul>
       {:else}
-        <p class="text-white">No applications found!</p>
+        <p class="text-center italic text-gray-500">No applications found!</p>
       {/if}
     {/await}
   </div>
