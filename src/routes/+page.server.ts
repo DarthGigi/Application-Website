@@ -11,7 +11,7 @@ import type { PageServerLoad } from './$types';
 import type { Application } from '$lib/types/application';
 import { validateSession } from '$lib/server/auth';
 
-const botDetect = new RegExp('/(bot)/gm');
+const botDetect = new RegExp(/(bot)/gi);
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -35,8 +35,8 @@ const formSchema = z.object({
 
 export const load = (async (event) => {
   const sess = await validateSession(event.cookies);
-  const ua = event.request.headers.get('User-Agent');
-  if (!ua || botDetect.test(ua as string)) {
+  const ua = event.request.headers.get('User-Agent').toLowerCase();
+  if (!ua || ua.includes("bot")) {
     return {};
   }
   if (!sess) throw redirect(302, '/login');
