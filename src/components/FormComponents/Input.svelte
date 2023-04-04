@@ -4,7 +4,17 @@
   export let name = 'Undefined';
   export let size = 'medium';
   export let type = 'text';
-  export let contraints: any = { required: true };
+  export let contraints:
+    | Partial<{
+        pattern: string;
+        min: string | number;
+        max: string | number;
+        required: boolean;
+        step: number;
+        minlength: number;
+        maxlength: number;
+      }>
+    | undefined = { required: true };
 
   switch (size) {
     case 'short':

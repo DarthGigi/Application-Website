@@ -3,10 +3,8 @@
   export let name = 'Undefined';
   export let value = 'Undefined';
   export let id = 'Undefined';
-  export let checked: boolean = false;
-  export let rightAnswer: boolean = false;
-  if (rightAnswer === true) {
-  }
+  export let checked = false;
+  export let rightAnswer = false;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

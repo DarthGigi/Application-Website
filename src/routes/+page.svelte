@@ -13,8 +13,8 @@
   import SubmitButton from '../components/FormComponents/SubmitButton.svelte';
   import Navbar from '../components/Navbar.svelte';
 
-  let submitButtonDisabled: boolean = false;
-  let submitButtonText: string = 'Submit';
+  let submitButtonDisabled = false;
+  let submitButtonText = 'Submit';
 
   // Exports
   export let data: PageData;
@@ -55,7 +55,7 @@
         }, 2000);
         formEl.reset();
       } else {
-        // @ts-ignore
+        // @ts-expect-error because it has weird params
         submitButtonText = result.data.message;
         submitButtonDisabled = true;
         setTimeout(() => {

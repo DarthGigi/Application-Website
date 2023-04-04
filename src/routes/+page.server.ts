@@ -11,7 +11,7 @@ import type { PageServerLoad } from './$types';
 import type { Application } from '$lib/types/application';
 import { validateSession } from '$lib/server/auth';
 
-const botDetect = new RegExp("/(bot)/gm");
+const botDetect = new RegExp('/(bot)/gm');
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -35,9 +35,9 @@ const formSchema = z.object({
 
 export const load = (async (event) => {
   const sess = await validateSession(event.cookies);
-  const ua = event.request.headers.get("User-Agent");
-  if (!ua || botDetect.test((ua as string))) {
-    return {}
+  const ua = event.request.headers.get('User-Agent');
+  if (!ua || botDetect.test(ua as string)) {
+    return {};
   }
   if (!sess) throw redirect(302, '/login');
   const form = await superValidate(event, formSchema);
@@ -108,7 +108,7 @@ export const actions: Actions = {
       }
       // eslint-disable-next-line no-empty
     } catch (_) {}
-    const existingApplication: Document[] = await Applications.find({ $or: [{ "discord.User.id": session.user.discord.User.id }] });
+    const existingApplication: Document[] = await Applications.find({ $or: [{ 'discord.User.id': session.user.discord.User.id }] });
 
     if (existingApplication.length !== 0) {
       return fail(400, {

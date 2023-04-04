@@ -12,7 +12,7 @@ const schema = new mongoose.Schema<Application>(
     status: { type: Number, required: true },
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: false },
-    Reviewers: { type: [String], required: false, default: [] }
+    Reviewer: { type: String, required: false }
   },
   { versionKey: false }
 );

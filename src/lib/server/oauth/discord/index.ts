@@ -1,7 +1,7 @@
-import type { DiscordAccessTokenResponse } from '$lib/types/discord';
+import type { DiscordAccessTokenResponse, DiscordConnection } from '$lib/types/discord';
 import type { APIUser, APIGuildMember } from 'discord-api-types/v10';
 import { PUBLIC_SIRIUS_GUILD_ID, PUBLIC_SIRIUS_REVIEWER_ID } from '$env/static/public';
-import type { User } from '$lib/server/types/database';
+import type { Connection, User } from '$lib/server/types/database';
 
 export const DiscordAPIBase = 'https://discord.com/api/';
 export const DiscordImageBase = 'https://cdn.discordapp.com/';
@@ -28,7 +28,10 @@ function getEnding(input: string): 'png' | 'gif' {
 export const GenerateUserFromAccessToken = async (resp: DiscordAccessTokenResponse): Promise<User> => {
   const tokenInfo: TokenInfo = { token: resp.access_token, type: resp.token_type };
   const apiUser: APIUser = await getData('users/@me', tokenInfo);
-  const gm: APIGuildMember = await getData(`/users/@me/guilds/${PUBLIC_SIRIUS_GUILD_ID}/member`, tokenInfo);
+  const gm: APIGuildMember = await getData(`users/@me/guilds/${PUBLIC_SIRIUS_GUILD_ID}/member`, tokenInfo);
+  const userCons = (await getData('users/@me/connections', tokenInfo)) as DiscordConnection[];
+  const connections: Connection[] = [];
+  userCons.forEach((con) => connections.push({ name: con.name, verified: con.verified, visibility: con.visibility, type: con.type }));
 
   const user: User = {
     _id: '',
@@ -44,7 +47,8 @@ export const GenerateUserFromAccessToken = async (resp: DiscordAccessTokenRespon
         username: apiUser.username,
         banner: apiUser.banner ? `${DiscordImageBase}banners/${apiUser.id}/${apiUser.banner}.${getEnding(apiUser.banner)}` : null,
         accent_color: apiUser.accent_color,
-        avatar: apiUser.avatar ? `${DiscordImageBase}avatars/${apiUser.id}/${apiUser.avatar}.${getEnding(apiUser.avatar)}` : `${DiscordImageBase}embed/avatars/${parseInt(apiUser.discriminator) % 5}.png`
+        avatar: apiUser.avatar ? `${DiscordImageBase}avatars/${apiUser.id}/${apiUser.avatar}.${getEnding(apiUser.avatar)}` : `${DiscordImageBase}embed/avatars/${parseInt(apiUser.discriminator) % 5}.png`,
+        connections
       }
     },
     reviewer: false

@@ -1,6 +1,6 @@
 <script lang="ts">
   export let title: string;
-  export let value: any = undefined;
+  export let value: string | undefined = undefined;
 </script>
 
 <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">

@@ -1,3 +1,10 @@
+export interface Connection {
+  name: string;
+  verified: boolean;
+  visibility: number;
+  type: string;
+}
+
 export interface DiscordUser {
   User: {
     id: string;
@@ -6,6 +13,7 @@ export interface DiscordUser {
     avatar?: string;
     banner?: string | null;
     accent_color?: number | null;
+    connections?: Connection[];
   };
   Guild: {
     nickname?: string | null;

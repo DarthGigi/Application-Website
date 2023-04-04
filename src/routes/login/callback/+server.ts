@@ -5,7 +5,7 @@ import type { OAuthResponse } from '$lib/types/discord';
 import { ExchangeAccessToken } from '$lib/server/oauth';
 import { GenerateUserFromAccessToken } from '$lib/server/oauth/discord/';
 import { connectionStatus, connectToDB } from '$lib/server/database';
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import Users from '$lib/server/database/models/user';
 import { v4 } from 'uuid';
 import { newSession } from '$lib/server/auth';

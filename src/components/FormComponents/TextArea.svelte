@@ -3,7 +3,17 @@
   export let placeholder = ' ';
   export let name = 'Undefined';
   export let size = 'medium';
-  export let constraints: any;
+  export let constraints:
+    | Partial<{
+        pattern: string;
+        min: string | number;
+        max: string | number;
+        required: boolean;
+        step: number;
+        minlength: number;
+        maxlength: number;
+      }>
+    | undefined;
 
   switch (size) {
     case 'short':

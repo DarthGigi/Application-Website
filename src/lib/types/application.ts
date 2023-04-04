@@ -26,5 +26,5 @@ export interface Application {
   status: ApplicationStatus;
   createdAt: Date;
   updatedAt?: Date;
-  Reviewers?: string[];
+  Reviewer?: string;
 }

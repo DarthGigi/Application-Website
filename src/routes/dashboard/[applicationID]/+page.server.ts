@@ -54,8 +54,8 @@ export const actions: Actions = {
     }
 
     application.status = ApplicationStatus.ACCEPTED;
-    if (!application.Reviewers) application.Reviewers = [];
-    application.Reviewers?.push(reviewer.discord.User.id);
+    application.Reviewer = reviewer.discord.User.id;
+    application.updatedAt = new Date();
 
     await Applications.findByIdAndUpdate(application._id, application);
 
@@ -85,14 +85,13 @@ export const actions: Actions = {
     }
 
     application.status = ApplicationStatus.DENIED;
-    if (!application.Reviewers) application.Reviewers = [];
-    
-    if(!application.Reviewers.includes(reviewer.discord.User.id)) application.Reviewers.push(reviewer.discord.User.id);
+    application.Reviewer = reviewer.discord.User.id;
+    application.updatedAt = new Date();
 
     await Applications.findByIdAndUpdate(application._id, application);
 
     // Send messages
-    await sendDenyLog(application.discord);
+    await sendDenyLog(application.discord, application);
 
     throw redirect(302, '/dashboard/' + params.applicationID);
   },

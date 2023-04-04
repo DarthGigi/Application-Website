@@ -13,7 +13,7 @@ export const connectionStatus: connectionTracker = {
 };
 
 export const connectToDB = async () => {
-  const Start = new Date().getTime();
+  const Start = Date.now();
   if (connectionStatus.status == mongoose.ConnectionStates.connected) {
     throw Error('Mongoose is already connected');
   }
@@ -25,20 +25,19 @@ export const connectToDB = async () => {
     await mongoose.disconnect();
   }
   connectionStatus.status = mongoose.ConnectionStates.connecting;
-  console.log(MONGO_URI)
   const con = await mongoose.connect(MONGO_URI, { keepAlive: true, keepAliveInitialDelay: 300000 });
   connectionStatus.status = mongoose.ConnectionStates.connected;
   // successfully connected!
   Connection.Mongoose = con;
-  console.log(`Sucessfully connected to Database in ${new Date().getTime() - Start}ms!`);
+  console.log(`Sucessfully connected to Database in ${Date.now() - Start}ms!`);
 };
 
 export const disconnectFromDB = async () => {
-  const startTime = new Date().getTime();
+  const startTime = Date.now();
   if (connectionStatus.status != mongoose.ConnectionStates.connected) throw Error('Not connected to database.');
   connectionStatus.status = mongoose.ConnectionStates.disconnecting;
 
   await mongoose.disconnect();
   connectionStatus.status = mongoose.ConnectionStates.disconnected;
-  console.log(`Disconnected from the database in ${new Date().getTime() - startTime} ms.`);
+  console.log(`Disconnected from the database in ${Date.now() - startTime} ms.`);
 };
