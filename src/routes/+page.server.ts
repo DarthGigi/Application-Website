@@ -11,7 +11,7 @@ import type { PageServerLoad } from './$types';
 import type { Application } from '$lib/types/application';
 import { validateSession } from '$lib/server/auth';
 
-const botDetect = new RegExp(/(bot)/gi);
+const botDetect = new RegExp('/(bot)/gm');
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -35,11 +35,12 @@ const formSchema = z.object({
 
 export const load = (async (event) => {
   const sess = await validateSession(event.cookies);
-  const ua = event.request.headers.get('User-Agent').toLowerCase();
-  if (!ua || ua.includes("bot")) {
+  const ua = event.request.headers.get('User-Agent');
+  if (!ua || botDetect.test(ua as string)) {
     return {};
   }
   if (!sess) throw redirect(302, '/login');
+
   const form = await superValidate(event, formSchema);
   return {
     props: {
@@ -47,38 +48,6 @@ export const load = (async (event) => {
     }
   };
 }) satisfies PageServerLoad;
-
-/*
-// Cloudflare Turnstile
-interface TokenValidateResponse {
-  'error-codes': string[];
-  success: boolean;
-  action: string;
-  cdata: string;
-}
-
-async function validateToken(token: FormDataEntryValue | string | null, secret: string | undefined) {
-  const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      response: token,
-      secret: secret
-    })
-  });
-
-  const data: TokenValidateResponse = await response.json();
-
-  return {
-    // Return the status
-    success: data.success,
-
-    // Return the first error if it exists
-    error: data['error-codes']?.length ? data['error-codes'][0] : null
-  };
-}*/
 
 export const actions: Actions = {
   default: async (event) => {
@@ -90,24 +59,15 @@ export const actions: Actions = {
     // Validate the form itself
     const form = await superValidate(await event.request.clone().formData(), formSchema);
 
-    //if (!form.valid) return fail(400, { form });
+    if (!form.valid) return fail(400, { form });
 
-    //const token = (await event.request.formData()).get('cf-turnstile-response');
-    //const SECRET_KEY = CF_TURNSTILE_SECRET_KEY;
-
-    // Validate the token
-    // const { success, error } = await validateToken(token, SECRET_KEY);
-    // if (!success) {
-    //   return fail(400, {
-    //     message: error || 'Invalid CAPTCHA'
-    //   });
-    // }
     try {
       if (connectionStatus.status != mongoose.ConnectionStates.connected) {
         await connectToDB();
       }
       // eslint-disable-next-line no-empty
     } catch (_) {}
+    const existingApplication: Document[] = await Applications.find({ $or: [{ 'discord.User.id': session.user.discord.User.id }] });
     const existingApplication: Document[] = await Applications.find({ $or: [{ 'discord.User.id': session.user.discord.User.id }] });
 
     if (existingApplication.length !== 0) {
