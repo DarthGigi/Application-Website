@@ -23,9 +23,12 @@
         {#if $page.data.application.Reviewers}
           <br />
           <span class="text-sm text-neutral-400">by {$page.data.application.Reviewers[0]}</span>
-        {:else}
+        {:else if $page.data.application.Reviewer}
           <br />
           <span class="text-sm text-neutral-400">by {$page.data.application.Reviewer}</span>
+        {:else}
+          <br />
+          <span class="text-sm text-neutral-400">by No One!</span>
         {/if}
       </dd>
     </div>
