@@ -20,9 +20,12 @@
       <dt class="truncate text-sm font-medium text-neutral-400">Status</dt>
       <dd class="mt-1 text-3xl font-semibold lowercase tracking-tight text-neutral-300 first-letter:uppercase">
         {$page.data.parsedStatus}
-        {#if $page.data.application.Reviewers.length > 0}
+        {#if $page.data.application.Reviewers}
           <br />
           <span class="text-sm text-neutral-400">by {$page.data.application.Reviewers[0]}</span>
+        {:else}
+          <br />
+          <span class="text-sm text-neutral-400">by {$page.data.application.Reviewer}</span>
         {/if}
       </dd>
     </div>

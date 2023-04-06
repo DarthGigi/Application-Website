@@ -67,7 +67,7 @@ export const actions: Actions = {
       }
       // eslint-disable-next-line no-empty
     } catch (_) {}
-    const existingApplication: Document[] = await Applications.find({ $or: [{ 'discord.User.id': session.user.discord.User.id }] });
+    
     const existingApplication: Document[] = await Applications.find({ $or: [{ 'discord.User.id': session.user.discord.User.id }] });
 
     if (existingApplication.length !== 0) {
