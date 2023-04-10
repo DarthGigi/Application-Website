@@ -12,7 +12,7 @@ const schema = new mongoose.Schema<Application>(
     status: { type: Number, required: true },
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: false },
-    Reviewer: { type: String, required: false }
+    Reviewer: { type: Object, required: false, default: {} as DiscordUser['User'] }
   },
   { versionKey: false }
 );

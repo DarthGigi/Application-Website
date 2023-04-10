@@ -1,3 +1,3 @@
-<fieldset class="space-y-5">
+<fieldset class="max-w-md space-y-5">
   <slot />
 </fieldset>

@@ -15,8 +15,8 @@ const botDetect = new RegExp('/(bot)/gm');
 
 const formSchema = z.object({
   name: z.string().min(1),
-  siriusUsage: z.string().min(1),
   siriusDiscovery: z.string().min(1),
+  spareTime: z.string().min(1),
   question1: z.string().min(1),
   question2: z.string().min(1),
   question3: z.string().min(1),
@@ -26,8 +26,6 @@ const formSchema = z.object({
   question7: z.string().min(1),
   question8: z.string().min(1),
   question9: z.string().min(1),
-  question10: z.string().min(1),
-  question11: z.string().min(1),
   contactStaff: z.string().min(2),
   contactInfo: z.string().min(2),
   data: z.string().min(2)
@@ -67,7 +65,7 @@ export const actions: Actions = {
       }
       // eslint-disable-next-line no-empty
     } catch (_) {}
-    
+
     const existingApplication: Document[] = await Applications.find({ $or: [{ 'discord.User.id': session.user.discord.User.id }] });
 
     if (existingApplication.length !== 0) {
@@ -88,7 +86,7 @@ export const actions: Actions = {
 
     const responses: FormResponses = {
       Discovery: form.data.siriusDiscovery,
-      Usage: form.data.siriusUsage,
+      SpareTime: form.data.spareTime,
       Questions: questions
     };
 

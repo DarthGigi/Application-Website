@@ -1,7 +1,7 @@
 import type { DiscordUser } from '$lib/server/types/database';
 
 export interface FormResponses {
-  Usage: string;
+  SpareTime: string;
   Discovery: string;
   Questions: string[];
 }
@@ -26,5 +26,5 @@ export interface Application {
   status: ApplicationStatus;
   createdAt: Date;
   updatedAt?: Date;
-  Reviewer?: string;
+  Reviewer?: DiscordUser['User'];
 }

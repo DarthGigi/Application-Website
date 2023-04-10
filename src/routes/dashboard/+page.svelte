@@ -3,6 +3,35 @@
   import { ApplicationStatus } from '$lib/types/application';
   import Header from './components/Header.svelte';
   export let data: PageData;
+
+  let clickCount = 0;
+  let text = 'Delete All Applications';
+
+  function handleClick() {
+    clickCount++;
+    const button = document.getElementById('delete-all-button') as HTMLButtonElement;
+    // initial styling of the button: absolute, left: 50% translateX: -50%
+    if (clickCount === 1) {
+      text = 'Are you sure?';
+      // translate the button to left
+      button.style.left = '0';
+      button.style.transform = 'translateX(150%)';
+    } else if (clickCount === 2) {
+      text = 'This is your last chance!';
+      // translate the button to right
+      button.style.left = '50%';
+    } else if (clickCount === 3) {
+      // reset the button to initial styling
+      button.style.left = '50%';
+      button.style.transform = 'translateX(-50%)';
+      text = 'Deleting...';
+      // Submit the form
+      const form = document.getElementById('delete-all-form') as HTMLFormElement;
+      if (form) {
+        form.submit();
+      }
+    }
+  }
 </script>
 
 <Header />
@@ -61,8 +90,11 @@
           {/each}
         </ul>
       {:else}
-        <p class="text-center italic text-gray-500">No applications found!</p>
+        <p class="text-center italic text-neutral-500">No applications found!</p>
       {/if}
     {/await}
   </div>
+  <form id="delete-all-form" action="?/deleteAllApplications" method="POST">
+    <button id="delete-all-button" on:click={handleClick} type="button" class="absolute left-1/2 ml-3 inline-flex -translate-x-1/2 cursor-pointer justify-center rounded-md border border-neutral-800 bg-black px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-500 hover:border-neutral-500 hover:bg-white hover:text-black focus:ring-transparent focus:ring-offset-0 active:scale-90">{text}</button>
+  </form>
 </div>

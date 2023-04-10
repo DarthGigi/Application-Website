@@ -27,6 +27,25 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 
   const applications = (await Applications.find({})).map((app) => app.toObject({ getters: false }) as Application);
 
+  applications.sort((a, b) => {
+    if (a.status === b.status) {
+      // if both applications have the same status, sort by custom order
+      if (a.status === ApplicationStatus.PENDING) {
+        // if both applications have PENDING status, maintain their original order
+        return 0;
+      } else if (a.status === ApplicationStatus.ACCEPTED) {
+        // if both applications have ACCEPTED status, maintain their original order
+        return 0;
+      } else {
+        // if both applications have DENIED status, maintain their original order
+        return 0;
+      }
+    } else {
+      // sort applications by status
+      return a.status - b.status;
+    }
+  });
+
   return {
     parsedStatus: ParseStatusApplication(application.status),
     application: JSON.parse(JSON.stringify(application)) as Application,
@@ -44,9 +63,11 @@ export const actions: Actions = {
       }
       // eslint-disable-next-line no-empty
     } catch (_) {}
-
     const ses = await validateSession(cookies);
     if (!ses) throw redirect(302, '/login');
+
+    if (!ses.user.reviewer) throw redirect(302, '/unauthorized');
+
     const reviewer = ses.user;
     const application = ((await Applications.findById(params.applicationID)) as mongoose.Document<string, null, Application> | null)?.toObject({ getters: false }) as Application;
     if (!application) {
@@ -54,7 +75,7 @@ export const actions: Actions = {
     }
 
     application.status = ApplicationStatus.ACCEPTED;
-    application.Reviewer = reviewer.discord.User.id;
+    application.Reviewer = reviewer.discord.User;
     application.updatedAt = new Date();
 
     await Applications.findByIdAndUpdate(application._id, application);
@@ -74,9 +95,10 @@ export const actions: Actions = {
       }
       // eslint-disable-next-line no-empty
     } catch (_) {}
-
     const ses = await validateSession(cookies);
     if (!ses) throw redirect(302, '/login');
+
+    if (!ses.user.reviewer) throw redirect(302, '/unauthorized');
 
     const reviewer = ses.user;
     const application = ((await Applications.findById(params.applicationID)) as mongoose.Document<string, null, Application> | null)?.toObject({ getters: false }) as Application;
@@ -85,7 +107,7 @@ export const actions: Actions = {
     }
 
     application.status = ApplicationStatus.DENIED;
-    application.Reviewer = reviewer.discord.User.id;
+    application.Reviewer = reviewer.discord.User;
     application.updatedAt = new Date();
 
     await Applications.findByIdAndUpdate(application._id, application);
@@ -95,7 +117,18 @@ export const actions: Actions = {
 
     throw redirect(302, '/dashboard/' + params.applicationID);
   },
-  deleteApplication: async ({ params }) => {
+  deleteApplication: async ({ params, cookies }) => {
+    try {
+      if (connectionStatus.status != mongoose.ConnectionStates.connected) {
+        await connectToDB();
+      }
+      // eslint-disable-next-line no-empty
+    } catch (_) {}
+    const ses = await validateSession(cookies);
+    if (!ses) throw redirect(302, '/login');
+
+    if (!ses.user.reviewer) throw redirect(302, '/unauthorized');
+
     await Applications.findByIdAndDelete(params.applicationID);
     throw redirect(302, '/dashboard');
   }

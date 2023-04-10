@@ -13,6 +13,6 @@
     <input {id} {checked} {value} {name} disabled type="radio" class="h-4 w-4 border-neutral-800 bg-black text-white checked:border-white checked:bg-white focus:border-neutral-500 focus:ring-transparent focus:ring-offset-0" />
   </div>
   <div class="ml-3 text-sm">
-    <label for={id} class={rightAnswer === true ? 'font-bold text-neutral-400' : 'text-neutral-400'}><p>{description}</p></label>
+    <label for={id} class={rightAnswer === true ? 'font-bold text-neutral-300' : 'text-neutral-400'}><p>{description}</p></label>
   </div>
 </div>
