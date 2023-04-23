@@ -28,7 +28,9 @@ export const GET = (async ({ url, getClientAddress, cookies }) => {
       await connectToDB();
     }
     // eslint-disable-next-line no-empty
-  } catch (_) {}
+  } catch (e) {
+    console.log("Caught callback err:", e);
+  }
 
   const existing = await Users.findOne({ 'discord.User.id': us.discord.User.id });
   if (!existing) {
