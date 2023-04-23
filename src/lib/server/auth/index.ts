@@ -22,8 +22,7 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
       await connectToDB();
     }
     // eslint-disable-next-line no-empty
-  } catch (e) {
-    console.log("CAUGHT AUTH ERR:", e);
+  } catch (_) {
     return;
   }
 
