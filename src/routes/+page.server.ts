@@ -50,8 +50,7 @@ export const load = (async (event) => {
 export const actions: Actions = {
   default: async (event) => {
     const session = await validateSession(event.cookies);
-
-    // this is a rare case
+    
     if (!session) throw redirect(302, '/');
 
     // Validate the form itself

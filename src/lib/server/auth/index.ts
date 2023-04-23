@@ -22,7 +22,10 @@ export const validateSession = async (cookies: Cookies): Promise<{ session: Sess
       await connectToDB();
     }
     // eslint-disable-next-line no-empty
-  } catch (_) {}
+  } catch (e) {
+    console.log("CAUGHT AUTH ERR:", e);
+    return;
+  }
 
   const sess: Session | null = await Sessions.findById(Buffer.from(sessionID, 'hex').toString());
 
