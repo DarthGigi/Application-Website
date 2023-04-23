@@ -52,7 +52,7 @@ export const actions: Actions = {
     const session = await validateSession(event.cookies);
 
     // this is a rare case
-    if (!session) throw redirect(302, '/login');
+    if (!session) throw redirect(302, '/');
 
     // Validate the form itself
     const form = await superValidate(await event.request.clone().formData(), formSchema);
