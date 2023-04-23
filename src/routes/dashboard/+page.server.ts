@@ -53,7 +53,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 export const actions: Actions = {
   // delete all applications
   deleteAllApplications: async ({ params, cookies }) => {
-    console.log('delete all applications');
     try {
       if (connectionStatus.status != mongoose.ConnectionStates.connected) {
         await connectToDB();
