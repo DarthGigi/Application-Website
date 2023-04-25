@@ -14,6 +14,8 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
     throw redirect(302, '/login');
   }
 
+  if (!session.user.reviewer) throw redirect(302, '/unauthorized');
+
   try {
     if (connectionStatus.status != mongoose.ConnectionStates.connected) {
       await connectToDB();
