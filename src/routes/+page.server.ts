@@ -38,19 +38,17 @@ export const load = (async (event) => {
     return {};
   }
   if (!sess) throw redirect(302, '/login');
-
-  const form = await superValidate(event, formSchema);
-  return {
-    props: {
-      form
-    }
-  };
+  if (sess.user.discord.Guild.roles.includes('1100444313172852777')) {
+    // blacklisted
+    throw redirect(302, '/blacklisted');
+  }
+  return {};
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
   default: async (event) => {
     const session = await validateSession(event.cookies);
-    
+
     if (!session) throw redirect(302, '/');
 
     // Validate the form itself
