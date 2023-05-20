@@ -37,11 +37,13 @@ export const load = (async (event) => {
   if (!ua || botDetect.test(ua as string)) {
     return {};
   }
-  if (!sess) throw redirect(302, '/login');
-  if (sess.user.discord.Guild.roles.includes('1100444313172852777')) {
-    // blacklisted
-    throw redirect(302, '/blacklisted');
+  if (sess) {
+    if (sess.user.discord.Guild.roles.includes('1100444313172852777')) {
+      // blacklisted
+      throw redirect(302, '/blacklisted');
+    }
   }
+
   return {};
 }) satisfies PageServerLoad;
 
