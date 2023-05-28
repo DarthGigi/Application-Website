@@ -12,6 +12,7 @@
   import Checkbox from '../components/FormComponents/Checkbox.svelte';
   import SubmitButton from '../components/FormComponents/SubmitButton.svelte';
   import Navbar from '../components/Navbar.svelte';
+  import { page } from '$app/stores';
 
   let submitButtonDisabled = false;
   let submitButtonText = 'Submit';
@@ -19,7 +20,7 @@
   // Exports
   export let data: PageData;
 
-  export const { form, enhance, constraints, errors } = superForm(data.props?.form, {
+  export const { form, enhance, constraints, errors } = superForm($page.form, {
     taintedMessage: 'Are you sure you want to leave?',
     multipleSubmits: 'prevent',
     validators: {
@@ -137,7 +138,7 @@
         <CheckboxContainer>
           <Checkbox title="Contacting" description="I agree that I will not contact any staff member about when the application will be reviewed or the reason for its denial." name="contactStaff" />
           <Checkbox title="Information" description="I agree that all the information I get about the final outcome will be stated in the DM I receive from the bot, and I won't contact anyone about or talk about it on the server to get further information." name="contactInfo" />
-          <Checkbox title="Data" description="I acknowledge that after submitting this form, my discord data and all the information I provided above will be stored in a database. (We will not share this information with anyone. Not even staff members.)" name="data" />
+          <Checkbox title="Data" description="I acknowledge that after submitting this form, my discord data and all the information I provided above will be stored in a database." name="data" />
         </CheckboxContainer>
 
         <div class="flex flex-1 flex-shrink flex-grow-0 justify-end">
