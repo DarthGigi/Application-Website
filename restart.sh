@@ -1,1 +1,1 @@
-npm install && npm run build && pm2 restart "Jobs"
+pnpm install --frozen-lockfile && npm run build && pm2 restart "Jobs"
