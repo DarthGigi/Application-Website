@@ -20,12 +20,6 @@ export const load = (async (event) => {
   if (!ua || botDetect.test(ua as string)) {
     return {};
   }
-  if (sess) {
-    if (sess.user.discord.Guild.roles.includes('1100444313172852777')) {
-      // blacklisted
-      throw redirect(302, '/blacklisted');
-    }
-  }
 
   return {};
 }) satisfies PageServerLoad;
@@ -134,7 +128,7 @@ export const actions: Actions = {
           ]
         };
 
-        const res = await fetch('https://discord.com/api/v10/channels/1092822492604796938/messages', {
+        const res = await fetch('https://discord.com/api/v10/channels/1123968511388164128/messages', {
           method: 'POST',
           headers: {
             Authorization: `Bot ${DISCORD_BOT_TOKEN}`,

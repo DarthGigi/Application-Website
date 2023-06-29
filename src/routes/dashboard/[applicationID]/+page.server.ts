@@ -83,8 +83,8 @@ export const actions: Actions = {
     await Applications.findByIdAndUpdate(application._id, application);
 
     // add roles
-    await addUserAcceptedRole(application.discord.User.id, '939871641209540658', `Application approved by ${reviewer.discord.User.username}`);
-    await addUserAcceptedRole(application.discord.User.id, '1089307016108970035', `Application approved by ${reviewer.discord.User.username}`);
+    await addUserAcceptedRole(application.discord.User.id, '1123957045360595015', `Application approved by ${reviewer.discord.User.username}`);
+    await addUserAcceptedRole(application.discord.User.id, '1123957475637465210', `Application approved by ${reviewer.discord.User.username}`);
 
     await sendAcceptLog(application.discord, application);
 
