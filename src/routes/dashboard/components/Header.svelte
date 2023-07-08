@@ -30,7 +30,7 @@
         <div class="w-full sm:max-w-xs">
           <SelectMenu bind:isOpen={open} />
         </div>
-        {#if $page.params.applicationID}
+        {#if $page.params.applicationID && $page.data.user.reviewer}
           <Menu bind:isOpenMenu />
         {/if}
       </div>

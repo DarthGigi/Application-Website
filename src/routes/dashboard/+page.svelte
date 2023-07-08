@@ -94,7 +94,9 @@
       {/if}
     {/await}
   </div>
-  <form id="delete-all-form" action="?/deleteAllApplications" method="POST">
-    <button id="delete-all-button" on:click={handleClick} type="button" class="absolute left-1/2 ml-3 inline-flex -translate-x-1/2 cursor-pointer justify-center rounded-md border border-neutral-800 bg-black px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-500 hover:border-neutral-500 hover:bg-white hover:text-black focus:ring-transparent focus:ring-offset-0 active:scale-90">{text}</button>
-  </form>
+  {#if data.user?.reviewer}
+    <form id="delete-all-form" action="?/deleteAllApplications" method="POST">
+      <button id="delete-all-button" on:click={handleClick} type="button" class="absolute left-1/2 ml-3 inline-flex -translate-x-1/2 cursor-pointer justify-center rounded-md border border-neutral-800 bg-black px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-500 hover:border-neutral-500 hover:bg-white hover:text-black focus:ring-transparent focus:ring-offset-0 active:scale-90">{text}</button>
+    </form>
+  {/if}
 </div>

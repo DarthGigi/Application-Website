@@ -5,7 +5,8 @@ const schema = new mongoose.Schema<User>(
   {
     _id: { type: String, required: true },
     discord: { type: Object, required: true },
-    reviewer: { type: Boolean, required: true }
+    reviewer: { type: Boolean, required: false },
+    support: { type: Boolean, required: false }
   },
   { versionKey: false }
 );

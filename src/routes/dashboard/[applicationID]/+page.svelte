@@ -7,6 +7,8 @@
   import Radio from '../components/Radio.svelte';
 
   export let data: PageData;
+
+  console.log(data);
 </script>
 
 <Header />

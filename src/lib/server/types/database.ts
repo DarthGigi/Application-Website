@@ -26,6 +26,7 @@ export interface User {
   _id: string;
   discord: DiscordUser;
   reviewer: boolean;
+  support: boolean;
 }
 
 export interface Session {
