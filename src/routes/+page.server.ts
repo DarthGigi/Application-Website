@@ -30,7 +30,7 @@ export const actions: Actions = {
 
     if (!session) throw redirect(302, '/');
     // Validate the form itself
-    const form = await superValidate(await event.request.clone().formData(), z.object({ name: z.string().min(1), siriusDiscovery: z.string().min(1), spareTime: z.string().min(1), question1: z.string().min(1), question2: z.string().min(1), question3: z.string().min(1), question4: z.string().min(1), question5: z.string().min(1), question6: z.string().min(1), question7: z.string().min(1), question8: z.string().min(1), question9: z.string().min(1), contactStaff: z.string().min(2), contactInfo: z.string().min(2), data: z.string().min(2) }));
+    const form = await superValidate(await event.request.clone().formData(), z.object({ name: z.string().min(1), discovery: z.string().min(1), spareTime: z.string().min(1), question1: z.string().min(1), question2: z.string().min(1), question3: z.string().min(1), question4: z.string().min(1), question5: z.string().min(1), question6: z.string().min(1), question7: z.string().min(1), question8: z.string().min(1), question9: z.string().min(1), contactStaff: z.string().min(2), contactInfo: z.string().min(2), data: z.string().min(2) }));
 
     if (!form.valid) return fail(400, { form });
 
@@ -60,7 +60,7 @@ export const actions: Actions = {
     }
 
     const responses: FormResponses = {
-      Discovery: form.data.siriusDiscovery,
+      Discovery: form.data.discovery,
       SpareTime: form.data.spareTime,
       Questions: questions
     };
@@ -121,14 +121,14 @@ export const actions: Actions = {
                   type: 2,
                   label: 'View Application',
                   style: 5,
-                  url: `https://apply.sirius.menu/dashboard/${await application._id}`
+                  url: `https://example.com/dashboard/${await application._id}`
                 }
               ]
             }
           ]
         };
 
-        const res = await fetch('https://discord.com/api/v10/channels/1123968511388164128/messages', {
+        const res = await fetch('https://discord.com/api/v10/channels/{ID}/messages', {
           method: 'POST',
           headers: {
             Authorization: `Bot ${DISCORD_BOT_TOKEN}`,

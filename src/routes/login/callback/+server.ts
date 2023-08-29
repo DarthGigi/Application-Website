@@ -42,5 +42,5 @@ export const GET = (async ({ url, getClientAddress, cookies }) => {
   // here we create the session:
   await newSession(cookies, us._id);
 
-  throw redirect(302, us.reviewer || us.support ? '/dashboard' : '/');
+  throw redirect(302, us.reviewer || us.staff ? '/dashboard' : '/');
 }) satisfies RequestHandler;

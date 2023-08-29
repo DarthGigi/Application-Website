@@ -25,7 +25,7 @@
     multipleSubmits: 'prevent',
     validators: {
       name: (value) => (value.length >= 2 ? 'Name must be at least 2 characters long' : null),
-      siriusDiscovery: (value) => (value.length >= 1 ? 'Sirius Discovery must be at least 1 characters long' : null),
+      discovery: (value) => (value.length >= 1 ? 'Discovery must be at least 1 characters long' : null),
       spareTime: (value) => (value.length >= 1 ? 'Spare time must be at least 1 characters long' : null),
       question1: (value) => (value.length >= 1 ? 'Question 1 must be at least 1 characters long' : null),
       question2: (value) => (value.length >= 1 ? 'Question 2 must be at least 1 characters long' : null),
@@ -99,7 +99,7 @@
     <div id="#FormQuestions" class="flex flex-col flex-wrap space-y-6 px-4 py-8 sm:px-8 md:px-16 lg:px-32 xl:px-48 2xl:px-72">
       <FormQuestionContainer title="Introductory Questions" description="Before we begin, we'd like to get to know you, as a person, before getting to know about your skills and what you can bring to the team.">
         <Input label="What should we call you?" placeholder="Craig" name="name" type="text" contraints={$constraints.name} />
-        <Input label="Where did you hear about Sirius?" placeholder="From a friend" name="siriusDiscovery" type="text" contraints={$constraints.siriusDiscovery} />
+        <Input label="Where did you hear about us?" placeholder="From a friend" name="discovery" type="text" contraints={$constraints.discovery} />
         <Input label="What do you like to do, in your spare time?" placeholder="Help other people" name="spareTime" type="text" contraints={$constraints.spareTime} />
       </FormQuestionContainer>
 
@@ -120,18 +120,18 @@
 
         <RadioContainer title="A user is experiencing a technical issue with their device that is beyond your expertise. What should you do?" name="question3">
           <Radio description="Tell them to figure it out on their own" value="1" name="question3" id="question3-1" />
-          <Radio description="Ask a developer, or a more experienced support member for help" value="2" name="question3" id="question3-2" />
+          <Radio description="Ask a developer, or a more experienced staff member for help" value="2" name="question3" id="question3-2" />
           <Radio description="Tell them it works for you, so it's not your problem" value="3" name="question3" id="question3-3" />
           <Radio description="Ignore their issue and move on to another ticket" value="4" name="question3" id="question3-4" />
         </RadioContainer>
       </FormQuestionContainer>
-      <FormQuestionContainer title="Formal Questions" description="Now, we'd like to see how you'd fit into our team of support and staff, and if you're capable of keeping high standards while being friendly.">
-        <TextArea label="What inspired you to apply for the role of a support member, and what do you believe you can bring to the team?" name="question4" constraints={$constraints.question4} />
+      <FormQuestionContainer title="Formal Questions" description="Now, we'd like to see how you'd fit into our team, and if you're capable of keeping high standards while being friendly.">
+        <TextArea label="What inspired you to apply for the role of a staff member, and what do you believe you can bring to the team?" name="question4" constraints={$constraints.question4} />
         <TextArea label="What customer service experience do you have, and how do you handle difficult customers or situations?" name="question5" constraints={$constraints.question5} />
         <TextArea label="Have you ever encountered a technical issue that you didn't know how to solve? If so, how did you go about finding a solution?" name="question6" constraints={$constraints.question6} />
-        <TextArea label="How would you handle a situation where a user is upset or frustrated about their experience with Sirius?" name="question7" constraints={$constraints.question7} />
-        <TextArea label="What do you believe is the most important quality for a support member to possess, and why?" name="question8" constraints={$constraints.question8} />
-        <TextArea label="How would you handle a situation where a user is making a fraudulent claim or attempting to mislead Sirius?" name="question9" constraints={$constraints.question9} />
+        <TextArea label="How would you handle a situation where a user is upset or frustrated about their experience?" name="question7" constraints={$constraints.question7} />
+        <TextArea label="What do you believe is the most important quality for a staff member to possess, and why?" name="question8" constraints={$constraints.question8} />
+        <TextArea label="How would you handle a situation where a user is making a fraudulent claim or attempting to mislead?" name="question9" constraints={$constraints.question9} />
       </FormQuestionContainer>
 
       <div class="flex items-start justify-between">

@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 // one week
 const MaxSession = 60480000;
 
-const sessionCookieName = 'SiriusSession';
+const sessionCookieName = 'ApplicationSession';
 
 export const validateSession = async (cookies: Cookies): Promise<{ session: Session; user: User } | undefined> => {
   const sessionID = cookies.get(sessionCookieName);

@@ -1,2 +1,2 @@
-# Sirus Applications
-it's hosted at https://apply.sirius.menu
+# Applications Website
+It's like Google Forms but more customizable and with more features.

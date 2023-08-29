@@ -1,6 +1,6 @@
 import type { DiscordAccessTokenResponse, DiscordConnection } from '$lib/types/discord';
 import type { APIUser, APIGuildMember } from 'discord-api-types/v10';
-import { PUBLIC_SIRIUS_GUILD_ID, PUBLIC_SIRIUS_REVIEWER_ID, PUBLIC_SIRIUS_SUPPORT_ID } from '$env/static/public';
+import { PUBLIC_GUILD_ID, PUBLIC_REVIEWER_ID, PUBLIC_STAFF_ID } from '$env/static/public';
 import type { Connection, User } from '$lib/server/types/database';
 
 export const DiscordAPIBase = 'https://discord.com/api/';
@@ -28,7 +28,7 @@ function getEnding(input: string): 'png' | 'gif' {
 export const GenerateUserFromAccessToken = async (resp: DiscordAccessTokenResponse): Promise<User> => {
   const tokenInfo: TokenInfo = { token: resp.access_token, type: resp.token_type };
   const apiUser: APIUser = await getData('users/@me', tokenInfo);
-  const gm: APIGuildMember = await getData(`users/@me/guilds/${PUBLIC_SIRIUS_GUILD_ID}/member`, tokenInfo);
+  const gm: APIGuildMember = await getData(`users/@me/guilds/${PUBLIC_GUILD_ID}/member`, tokenInfo);
   const userCons = (await getData('users/@me/connections', tokenInfo)) as DiscordConnection[];
   const connections: Connection[] = [];
   userCons.forEach((con) => connections.push({ name: con.name, verified: con.verified, visibility: con.visibility, type: con.type }));
@@ -55,14 +55,14 @@ export const GenerateUserFromAccessToken = async (resp: DiscordAccessTokenRespon
   };
 
   console.log(gm.roles);
-  console.log('Is reviewer: ' + gm.roles.includes(PUBLIC_SIRIUS_REVIEWER_ID));
-  console.log('Is support: ' + gm.roles.includes(PUBLIC_SIRIUS_SUPPORT_ID));
+  console.log('Is reviewer: ' + gm.roles.includes(PUBLIC_REVIEWER_ID));
+  console.log('Is staff: ' + gm.roles.includes(PUBLIC_STAFF_ID));
 
-  if (gm.roles.includes(PUBLIC_SIRIUS_SUPPORT_ID)) {
-    user.support = true;
+  if (gm.roles.includes(PUBLIC_STAFF_ID)) {
+    user.staff = true;
   }
 
-  if (gm.roles.includes(PUBLIC_SIRIUS_REVIEWER_ID)) {
+  if (gm.roles.includes(PUBLIC_REVIEWER_ID)) {
     user.reviewer = true;
   }
 

@@ -16,13 +16,13 @@
     </a>
     <div class="hidden items-center gap-4 text-xs [line-height:1.33337] sm:flex lg:order-2">
       <div class="flex items-center gap-1 duration-700 ease-in-out">
-        <a href="https://sirius.menu/" target="_blank" class="font-light text-white opacity-80 hover:text-[#147ce5] hover:opacity-100">Sirius</a>
+        <a href="https://example.com/" target="_blank" class="font-light text-white opacity-80 hover:opacity-100">Link 1</a>
       </div>
       <div class="hidden items-center gap-1 duration-700 ease-in-out sm:flex">
-        <a href="https://rayfield.dev/" target="_blank" class="font-light text-white opacity-80 hover:text-[#147ce5] hover:opacity-100"> Rayfield</a>
+        <a href="https://example.com/" target="_blank" class="font-light text-white opacity-80 hover:opacity-100">Link 2</a>
       </div>
       <div class="hidden items-center gap-1 duration-700 ease-in-out sm:flex">
-        <a href="https://discord.gg/sirius" target="_blank" class="font-light text-white opacity-80 hover:text-[#147ce5] hover:opacity-100"> Discord</a>
+        <a href="https://example.com/" target="_blank" class="font-light text-white opacity-80 hover:opacity-100">Link 3</a>
       </div>
     </div>
   </div>

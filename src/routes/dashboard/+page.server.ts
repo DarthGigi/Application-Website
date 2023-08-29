@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
     throw redirect(302, '/login');
   }
 
-  if (!s.user.reviewer && !s.user.support) throw redirect(302, '/unauthorized');
+  if (!s.user.reviewer && !s.user.staff) throw redirect(302, '/unauthorized');
   // Load all applications
   try {
     if (connectionStatus.status != mongoose.ConnectionStates.connected) {

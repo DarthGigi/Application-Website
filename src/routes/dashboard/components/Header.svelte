@@ -21,7 +21,7 @@
       <div class="relative z-10 flex px-2 lg:px-0">
         <div class="flex flex-shrink-0 items-center">
           <a href="/dashboard">
-            <img class="block h-8 w-auto" src="/assets/images/logo.svg" alt="Sirius" />
+            <img class="block h-8 w-auto" src="/assets/images/logo.svg" alt="Logo" />
           </a>
         </div>
       </div>
